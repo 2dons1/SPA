@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "text": "Doctors Appointment",
+      "day": "May 1st 12:30pm",
+      "reminder": true
+    },
+    {
+      "id": 2,
+      "text": "Dentist",
+      "day": "May 26th 12:30pm",
+      "reminder": true
+    },
+    {
+      "id": 3,
+      "text": "Job Interview",
+      "day": "June 3rd 12:30pm",
+      "reminder": true
+    }
+  ]
+}
