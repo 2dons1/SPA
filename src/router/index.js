@@ -1,23 +1,19 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
-import About from '../views/About'
-import Countries from '../views/Countries'
 import NotFound from '../views/NotFound'
 import Home from '../views/Home'
-import Clock from '../views/Clock'
-import Capital from '../views/Capital'
+import Restaurants from '../views/Restaurants'
+import RestaurantPage from '../views/RestaurantPage'
+import SignupForm from '../components/SignupForm'
+import LoginForm from '../components/LoginForm'
+import MojiObjekti from '../views/MojiObjekti'
 
 
 const routes =[
     {
-        path: '/about',
-        name: 'About',
-        component: About
-    },
-    {
-        path: '/countries',
-        name: 'Countries',
-        component: Countries
+        path: '/ugostitelj/objekti',
+        name: 'MojiObjekti',
+        component: MojiObjekti
     },
     {
         path: '/',
@@ -25,14 +21,24 @@ const routes =[
         component: Home
     },
     {
-        path: '/clock',
-        name: 'Clock',
-        component: Clock
+        path: '/restaurants',
+        name: 'Restaurants',
+        component: Restaurants
     },
     {
-        path: '/capital',
-        name: 'Capital',
-        component: Capital
+        path: '/restaurants/:id',
+        name: 'RestaurantPage',
+        component: RestaurantPage
+    },
+    {
+        path: '/register',
+        name: 'SignupForm',
+        component: SignupForm
+    },
+    {
+        path: '/login',
+        name: 'LoginForm',
+        component: LoginForm
     },
     {
         path: '/:catchAll(.*)',

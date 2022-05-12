@@ -1,12 +1,11 @@
 <template>
     <div>
         <div class="cards"> 
-            <div v-bind:key="country.name" v-for="country in countries">
-                <Country class="card" 
-                    :title=country.name 
-                    :capital=country.capital 
-                    :population=country.population 
-                    :imgLink=country.flags.png
+            <div v-bind:key="review.name" v-for="review in reviews">
+                <ReviewCard
+                    :user_id = review.user_id 
+                    :review_text = review.review_text
+                    :review_title = review.review_title
                 />
             </div>
         </div>
@@ -16,29 +15,30 @@
 
 
 <script>
-import Country from '../components/Country'
+import ReviewCard from '../components/ReviewCard'
 
 export default{
-    name: 'Countries',
+    name: 'Reviews',
     props: {
+        id: String,
     },
     components:{
-        Country
+        ReviewCard
     },
     methods:{
-        async fetchCountries(){
-            const res = await fetch('https://restcountries.com/v2/all?fields=name,capital,population,flags');
+        async fetchReviews(){
+            const res = await fetch('http://localhost:3000/restaurant/' + this.id + '/reviews');
             const data = await res.json();
             return data;
         },
     },
     data(){
         return {
-        countries: []
+        reviews: []
         }
     },
     async created(){
-        this.countries = await this.fetchCountries();
+        this.reviews = await this.fetchReviews();
     }
 }
 </script>
@@ -46,7 +46,7 @@ export default{
 
 <style scoped>
     .cards {
-        max-width: 2000px;
+        max-width: 1000px;
         margin: 0 auto;
         display: grid;
         grid-gap: 1rem;

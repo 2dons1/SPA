@@ -1,12 +1,17 @@
 <template>
-    <h1>Napredni razvoj programske potpore za web</h1>
-    <h2>Treći projekt - SPA</h2>
-    <h3>rok za predaju je 2022-01-05 12:00:00.</h3>
+    <div>
+        <SignupForm />
+    </div>
 </template>
 
 <script>
+import SignupForm from '../components/SignupForm.vue'
+
 export default{
-    name: 'Home'
+    name: 'Home',
+    components:{
+        SignupForm
+    },
 }
 </script>
 

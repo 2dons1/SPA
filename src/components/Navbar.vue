@@ -2,44 +2,17 @@
     <div class="navbar">
         <ul>
             <li :class="this.$route.path == '/' ? 'active' : 'none'"><router-link to="/">Home</router-link></li>
-            <li :class="this.$route.path == '/countries' ? 'active' : 'none'"><router-link to="/countries">Countries</router-link></li>
-            <li :class="this.$route.path == '/capital' ? 'active' : 'none'"><router-link to="/capital">Capital</router-link></li>
-            <li :class="this.$route.path == '/clock' ? 'active' : 'none'"><router-link to="/clock">Clock</router-link></li>
-            <li :class="this.$route.path == '/about' ? 'active' : 'none'"><router-link to="/about">About</router-link></li>
-            <Button @do-something="buttonClicked" text="Emit-Button" :color=this.color></Button>
+            <!-- Probaj skuzit kako stavit da je active samo ako pocinje s /restaurants -->
+            <li :class="this.$route.path == '/restaurants' ? 'active' : 'none'"><router-link to="/restaurants">Restaurants</router-link></li>
+            <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i ugostitelj. -->
+            <li :class="this.$route.path == '/ugostitelj/objekti' ? 'active' : 'none'"><router-link to="/ugostitelj/objekti">My Restaurants</router-link></li>
         </ul>
     </div>
 </template>
 
 <script>
-import Button from '../components/Button'
 export default{
-    name: 'Navbar',
-    components: {
-      Button
-    },
-    data(){
-      return {
-        color: ""
-      }
-    },
-    methods:{
-      buttonClicked(){
-        if(this.color == "green"){        
-          this.color = "yellow";
-        }
-        else if(this.color == "yellow"){
-          this.color = "red";
-        }
-        else{
-          this.color = "green";
-        }
-      }
-    },
-    created() {
-      this.text = "Green";
-      this.color = "green";
-    }
+    name: 'Navbar'
 }
 </script>
 
