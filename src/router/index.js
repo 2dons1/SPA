@@ -7,6 +7,8 @@ import RestaurantPage from '../views/RestaurantPage'
 import SignupForm from '../components/SignupForm'
 import LoginForm from '../components/LoginForm'
 import MojiObjekti from '../views/MojiObjekti'
+import AdminPanel from '../components/AdminPanel'
+import MyReviews from '../views/MyReviews'
 
 
 const routes =[
@@ -14,6 +16,11 @@ const routes =[
         path: '/ugostitelj/objekti',
         name: 'MojiObjekti',
         component: MojiObjekti
+    },
+    {
+        path: '/reviews',
+        name: 'MyReviews',
+        component: MyReviews
     },
     {
         path: '/',
@@ -41,9 +48,14 @@ const routes =[
         component: LoginForm
     },
     {
+        path: '/admin',
+        name: 'AdminPanel',
+        component: AdminPanel
+    },
+    {
         path: '/:catchAll(.*)',
         name: 'NotFound',
-        component: NotFound
+        component: NotFound,
     },
 
 ]

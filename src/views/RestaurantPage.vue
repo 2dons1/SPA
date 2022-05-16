@@ -3,37 +3,45 @@
             <!-- <h3>RestaurantId: {{$route.params.id}}</h3> -->
             <!-- Restaurant Info -->
             <RestaurantInfo 
-                :name=restaurantInfo[0].naziv
-                :address=restaurantInfo[0].adresa
-                :phone=restaurantInfo[0].telefon
-                :time=restaurantInfo[0].time
-                :workingHours=workingHours
-                :pogodnosti=pogodnosti
-                :id=this.$route.params.id
+                :id=restaurantInfo[0].id
+                :naziv=restaurantInfo[0].naziv
+                :adresa=restaurantInfo[0].adresa
+                :radnoVrijeme=restaurantInfo[0].radnoVrijeme
+                :kontaktBroj=restaurantInfo[0].kontaktBroj
+                :datumStvaranja=restaurantInfo[0].datumStvaranja
+                :potvrden=restaurantInfo[0].potvrden
+                :vlasnik=restaurantInfo[0].vlasnik
+                :vrsta=restaurantInfo[0].vrsta
+                :grad=restaurantInfo[0].grad
+                :fotografije=restaurantInfo[0].fotografije
+                :pogodnosti=restaurantInfo[0].pogodnosti
             />
             
             <!-- Restaurant Reviews -->
-            <Reviews 
+            <Reviews
                 :id=this.$route.params.id
             />
 
             <!-- Leave a review form: treba mi id od ugostiteljskog objekta, id od usera koji ostavlja review i tekst review-a -->
             <!-- Prikazi ovu komponentu samo ako je korisnik gost, mozda i ako je ugostitelj ali nije vlasnik ovog objekta-->
-            <ReviewForm
-                :id=this.$route.params.id
-            v-if="0"/>
+            <div v-if="this.$store.getters.getUser">
+                <ReviewForm
+                    :id=this.$route.params.id
+                v-if="this.$store.getters.getUser.uloga == 'gost'"/>
 
-            <!-- Ako je korisnik ugostitelj i ujedno tome i vlasnik ovog objekta onda stavi formu za ažuriranje podataka -->
-            <div v-else id="edit">
-            <EditObjectForm  
-                :ime=restaurantInfo[0].naziv
-                :adresa=restaurantInfo[0].adresa
-                :telefon=restaurantInfo[0].telefon
-                :workingHours=workingHours
-                :pogodnosti=pogodnosti
-                :kratica=restaurantInfo[0].kratica
-                :id=this.$route.params.id
-            />
+                <!-- Ako je korisnik ugostitelj i ujedno tome i vlasnik ovog objekta onda stavi formu za ažuriranje podataka -->
+                <div v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == restaurantInfo[0].vlasnik" id="edit">
+                <EditObjectForm  
+                    :ime=restaurantInfo[0].naziv
+                    :adresa=restaurantInfo[0].adresa
+                    :telefon=restaurantInfo[0].kontaktBroj
+                    :workingHours=restaurantInfo[0].radnoVrijeme
+                    :pogodnosti=restaurantInfo[0].pogodnosti
+                    :kratica=restaurantInfo[0].vrsta
+                    :id=restaurantInfo[0].id
+                    :grad=restaurantInfo[0].grad
+                />
+                </div>
             </div>
 
     </div>
@@ -62,6 +70,7 @@ export default{
         async fetchRestaurant(){
             const res = await fetch('http://localhost:3000/restaurant/' + this.$route.params.id);
             const data = await res.json();
+            console.log(data)
             return data;
         },
     },
@@ -73,8 +82,6 @@ export default{
             restaurantInfo: [{
             }],
             restaurantReviews: [],
-            workingHours: ["08:00-23:00", "08:00-23:00", "08:00-23:00", "08:00-23:00", "08:00-02:00", "08:00-02:00", "NERADNO"],
-            pogodnosti: ["Besplatan WiFi", "Dostava", "Pet Friendly", "Moguča rezervacija", "Parking", "Karitčno plaćanje", "Testiranje"]
         }
     },
     

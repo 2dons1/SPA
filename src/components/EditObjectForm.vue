@@ -53,10 +53,11 @@ export default {
         ime: String,
         adresa: String,
         telefon: String,
-        workingHours: Array,
+        workingHours: String,
         pogodnosti: Array,
         kratica: String,
-        id: String
+        id: Number,
+        grad: String
     },
     data(){
         return{
@@ -84,7 +85,13 @@ export default {
             handler (newVal) {
                 this.address = newVal;
             }
-        },// Fali jos jedan watcher za grad, city.
+        },
+        grad: {
+            immediate: true,
+            handler (newVal) {
+                this.city = newVal;
+            }
+        },
         telefon: {
             immediate: true,
             handler (newVal) {
@@ -114,9 +121,12 @@ export default {
         async handleSubmit(){
             // Post request na server.
             // Trebaju mi informacije o objektu i tko salje request tj. ugostiteljev id.
-            const postOptions = {
+            const putOptions = {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                },
                 body: JSON.stringify(
                     { 
                         "name": this.name, 
@@ -126,12 +136,12 @@ export default {
                         "type": this.type,
                         "workHours": this.workHours,
                         "amenities": this.amenities,
-                        "user_id": 1, // Procitaj iz vuex koji je user trenutno ulogiran. 
+                        "user_id": this.$store.getters.getUser.id,
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/addRestaurant", postOptions);
+            const response = await fetch("http://localhost:3000/restaurants", putOptions);
             const data = await response.json();
             console.log(data)
 

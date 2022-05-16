@@ -2,17 +2,48 @@
     <div class="navbar">
         <ul>
             <li :class="this.$route.path == '/' ? 'active' : 'none'"><router-link to="/">Home</router-link></li>
-            <!-- Probaj skuzit kako stavit da je active samo ako pocinje s /restaurants -->
-            <li :class="this.$route.path == '/restaurants' ? 'active' : 'none'"><router-link to="/restaurants">Restaurants</router-link></li>
+
+            <!-- Ovo nemoj prikazat adminu -->
+            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path == '/restaurants' ? 'active' : 'none'"><router-link to="/restaurants">Restorani</router-link></li>
+
+            <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i gost. -->
+            <div v-if="this.$store.getters.getUser">
+            <li v-if="this.$store.getters.getUser.uloga == 'gost'" :class="this.$route.path == '/reviews' ? 'active' : 'none'"><router-link to="/reviews">Moje recenzije</router-link></li>
+            </div>
+
             <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i ugostitelj. -->
-            <li :class="this.$route.path == '/ugostitelj/objekti' ? 'active' : 'none'"><router-link to="/ugostitelj/objekti">My Restaurants</router-link></li>
+            <div v-if="this.$store.getters.getUser">
+            <li  v-if="this.$store.getters.getUser.uloga == 'ugostitelj'" :class="this.$route.path == '/ugostitelj/objekti' ? 'active' : 'none'"><router-link to="/ugostitelj/objekti">My Restaurants</router-link></li>
+            </div>
+
+            <div v-if="this.$store.getters.getUser">
+            <li  v-if="this.$store.getters.getUser.uloga == 'admin'" :class="this.$route.path == '/admin' ? 'active' : 'none'"><router-link to="/admin">Admin Panel</router-link></li>
+            </div>
+
+            <li class="login" :class="this.$route.path == '/login' ? 'active' : 'none'" v-if="!this.$store.getters.getUser"><router-link to="/login">Login</router-link></li>
+            <li :class="this.$route.path == '/register' ? 'active' : 'none'" v-if="!this.$store.getters.getUser"><router-link to="/register">Register</router-link></li>
+
+            <li class="logout" @click="handleLogout" v-if="this.$store.getters.getUser"><router-link to="">Logout</router-link></li>
+
         </ul>
     </div>
 </template>
 
 <script>
 export default{
-    name: 'Navbar'
+    name: 'Navbar',
+    methods:{
+      handleLogout(){
+        let text = "Are you sure about that?";
+        if (confirm(text) == true) {
+          this.$store.dispatch('logout');
+          this.$router.push({ name: 'Home' })
+        } else {
+          text = "You canceled!";
+        }
+        
+      }
+    }
 }
 </script>
 
@@ -25,10 +56,6 @@ ul {
   padding: 0;
   overflow: hidden;
   background-color: #333;
-}
-
-li {
-  float: left;
 }
 
 li a {
@@ -48,4 +75,22 @@ li a:hover:not(.active) {
 .active {
   background-color: #006B86;
 }
+
+.login{
+  margin-left: auto;
+}
+
+.login a{
+  color: white;
+  margin-left: auto;
+}
+
+.logout{
+  margin-left: auto;
+}
+
+.logout a{
+  color: red;
+}
+
 </style>

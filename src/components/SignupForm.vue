@@ -76,32 +76,16 @@ export default {
                     }
                 )
             };
-            // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            // Mozda koristit axios??? 
             const response = await fetch("http://localhost:3000/register", postOptions); // '/users'
-            const data = await response.json();
-
-            console.log(data)
-            if(data.status == "username used"){
-                this.username_error = true;
-                this.email_error = false;
-            }
-            else if(data.status == "email used"){
-                this.email_error = true;
-                this.username_error = false;
-            }
-            else{
-                // Uspjesno si se registriro, dali ga bacam na /login ili cu mu odmat dat cookie itd...
-                console.log("Uspjesna registracija")
-                this.username_error = false;
-                this.email_error = false;
-
-                // Uspjesno si se registrito, saljem te na /login.
-                this.$router.push({ name: 'LoginForm' })
-            }
-                
-
             
+            if(response.status == 201){
+                this.$router.push({ name: 'LoginForm' })
+                console.log(response)
+            }
+            else if(response.status == 409){
+                console.log(response)
+                this.username_error = true;
+            }
         }
     }
 }

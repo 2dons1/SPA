@@ -40,30 +40,40 @@ export default {
             // Post request na server.
             const postOptions = {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(
                     {  
                         "username": this.username,
-                        "password": this.password,
+                        "password": this.password, // Ovo bi trebalo hashirat i posolit prije nego sto se salje na backend, isto vrijedi i s registracijom.
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
             const response = await fetch("http://localhost:3000/login", postOptions); // '/auth/login'
             const data = await response.json();
-            console.log(data)
-                
-            if(data.status == "yes"){
-                this.error = ''
-                console.log("Uspjesa prijava, sada cu te poslat na /home i trebo bi ti dat cookie ili nesto?")
-                this.$router.push({ name: 'Restaurants' })
+
+            // Login je uspjesan.
+            if(data.status === 200){
+                this.error = '';
+
+                // Postavi usera i njegov access_token u local storage.
+                localStorage.setItem('user', JSON.stringify(data.user)); // Mogu odma dobit usera ili ga mogu trazit po tokenu kasnije.
+                localStorage.setItem('token', JSON.stringify(data.access_token));
+                this.$store.dispatch('setUser', data.user);
+                this.$store.dispatch('setToken', data.token);
+
+                console.log(this.$store.getters.getUser)
+                console.log(this.$store.getters.getToken)
+
+                // Bez obzira tko se ulogirao posalji ga na homepage.
+                this.$router.push({ name: 'Home' }) // zasada je ovo Homepage.
+               
             }
             else{
                 this.error = 'Neispravni kredencijali!'
             }
-
-            // Reload page.
-            // this.$router.go()
         }
     }
 }

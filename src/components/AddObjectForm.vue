@@ -66,7 +66,10 @@ export default {
             // Trebaju mi informacije o objektu i tko salje request tj. ugostiteljev id.
             const postOptions = {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                     "Authorization": 'Bearer ' + localStorage.getItem('token')
+                },
                 body: JSON.stringify(
                     { 
                         "name": this.name, 
@@ -76,7 +79,7 @@ export default {
                         "type": this.type,
                         "workHours": this.workHours,
                         "amenities": this.amenities,
-                        "user_id": 1, // Procitaj iz vuex koji je user trenutno ulogiran. 
+                        "user_id": this.$store.getters.getUser.id, // Procitaj iz vuex koji je user trenutno ulogiran. 
                     }
                 )
             };

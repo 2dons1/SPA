@@ -46,7 +46,7 @@ export default {
                     {  
                         "title": this.title,
                         "text": this.review,
-                        "user_id": 1, // Zasda je 1 jer nisam jos napravio user auth i te stvari po rolama.
+                        "user_id": this.$store.getters.getUser.username, // Zasda je 1 jer nisam jos napravio user auth i te stvari po rolama.
                         "restaurant_id": this.id
                     }
                 )

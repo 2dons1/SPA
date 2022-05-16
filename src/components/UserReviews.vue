@@ -19,16 +19,15 @@
 import ReviewCard from '../components/ReviewCard'
 
 export default{
-    name: 'Reviews',
+    name: 'UserReviews',
     props: {
-        id: String, // Ovo tu je id od restorana cije recenzije zelimo, meni treba jos i id od pojedine rece
     },
     components:{
         ReviewCard
     },
     methods:{
         async fetchReviews(){
-            const res = await fetch('http://localhost:3000/restaurant/' + this.id + '/reviews');
+            const res = await fetch('http://localhost:3000/restaurant/' + 4 + '/reviews'); // Daj mi sve recenzije nekog korisnika. Treba mi id recenzije tu isto.
             const data = await res.json();
             return data;
         },

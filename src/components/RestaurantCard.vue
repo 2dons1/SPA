@@ -1,12 +1,12 @@
 <template>
     <article class="card">
-      <img :src="require(`@/assets/${image}`)" alt="exposed brick wall in a hipster cafe">
+      <img :src="require(`@/assets/placeholder.png`)" alt="exposed brick wall in a hipster cafe"> <!-- ${image} -->
       <h3>{{naziv}} </h3> 
-      <i  v-if="kratica === 'caffe'" class='fas fa-cocktail'></i>
-      <i  v-else class="fas fa-hamburger"></i>
+      <i  v-if="vrsta === 'caffe'" class='fas fa-coffee'></i>
+      <i  v-else class="fas fa-cocktail"></i>
       <p><strong>Adresa:</strong> {{adresa}}</p>
       <p><strong>Radno vrijeme:</strong> {{radnoVrijeme}}</p>
-      <p><strong>Telefon:</strong> {{telefon}}</p>
+      <p><strong>Telefon:</strong> {{kontaktBroj}}</p>
       <router-link :to="'/restaurants/' + id" class="router">Detalji</router-link>
     </article>
 </template>
@@ -17,13 +17,18 @@
 export default {
         name: 'RestaurantCard',
         props: {
-            naziv: String,
-            image: String,
-            kratica: String, 
-            radnoVrijeme: String,
-            adresa: String,
             id: Number,
-            telefon: String
+            naziv: String,
+            adresa: String,
+            radnoVrijeme: String,
+            kontaktBroj: String,
+            datumStvaranja: String,
+            potvrden: Boolean,
+            vlasnik: Number,
+            vrsta: String,
+            grad: String,
+            fotografije: Array,
+            pogodnosti: Array
         },
         
     }
