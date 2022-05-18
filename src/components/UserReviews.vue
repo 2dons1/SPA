@@ -3,7 +3,7 @@
         <div class="cards"> 
             <div v-bind:key="review.name" v-for="review in reviews">
                 <ReviewCard
-                    :user_id = review.user_id 
+                    :user_id = review.user_id
                     :review_text = review.review_text
                     :review_title = review.review_title
                     :id = review.id

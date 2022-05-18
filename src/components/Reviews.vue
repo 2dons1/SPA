@@ -21,7 +21,7 @@ import ReviewCard from '../components/ReviewCard'
 export default{
     name: 'Reviews',
     props: {
-        id: String, // Ovo tu je id od restorana cije recenzije zelimo, meni treba jos i id od pojedine rece
+        id: String, // Ovo tu je id od restorana cije recenzije zelimo.
     },
     components:{
         ReviewCard

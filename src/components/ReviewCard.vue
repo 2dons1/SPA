@@ -4,28 +4,46 @@
         <div class="card-body">
             <h4>{{ user_id }} - {{ review_title }}</h4>
             <p class="card-text">{{review_text}}</p>
-            <a href="#" class="card-link">Prikaži više</a>
-            <p></p>
-            <a href="#" class="delete">Ukloni</a>
+
+            <!-- Prikazi ovo samo ako je korsnik ulogiran i ako je ovo njegova recenzije.-->
+            <div v-if="this.$store.getters.getUser">
+              <button  v-if="this.user_id == this.$store.getters.getUser.id" class="delete" v-on:click="handleDeleteReview(this.id)">Ukloni</button>
+            </div>
+            <div v-if="this.$store.getters.getUser">
+              <button  v-if="this.user_id == this.$store.getters.getUser.id" class="edit" v-on:click="openEditForm()">Uredi</button>
+            </div>
+
         </div>
 
         <div class="card-footer">
-          <p class="timestamp">Objavljeno: 10.3.2022 15:46</p>
-          <p v-if="edited" class="edited">Edited</p>
+          <p class="timestamp">Objavljeno: 10.3.2022 15:46</p> <!-- Ovo mi treba backend dat--->
+          <p v-if="edited" class="edited">Edited</p> <!-- Ovo mi treba backend dat--->
         </div>
 
         <!-- KOMENTARI, makni ovo kasnije u zasebnu komponentu. -->
         <div class="dropdown">
           <button class="dropbtn">Komentari</button>
           <div class="dropdown-content">
+            <!-- Ovo je jedan komentar, tj. for petlja za sve komentare -->
             <a v-for="comment in comments" v-bind:key="comment" >
               {{comment.username + ": " + comment.text}}
 
               <!-- Stavi ovo samo ako je vlasnik komentara ujedno i trenutni ulogirani korisnik.-->
               <div v-if="this.$store.getters.getUser">
+
                 <form @submit.prevent v-if="comment.user_id == this.$store.getters.getUser.id">
-                  <button class="comment-delete" v-on:click="handleDelete(comment)">Ukloni komentar</button>
+                  <button class="comment-delete" v-on:click="handleDeleteComment(comment)">Ukloni komentar</button>
                 </form>
+
+                <form @submit.prevent v-if="comment.user_id == this.$store.getters.getUser.id">
+                  <button class="comment-edit" v-on:click="openEditComment(comment)">Uredi komentar</button>
+                </form>
+
+                <form v-if="showEditComment && comment.text == this.editingCommet" @submit.prevent="handleEditComment(comment)" class="comment-form">
+                  <input type="text" :value="comment.text" class="comment-input" placeholder="Napišite komentar...">
+                  <button class="comment-submit">Ostavi komentar</button> <!-- Ovo smo sakrili -->
+                </form>
+
               </div>
 
             </a>
@@ -33,7 +51,7 @@
             <!-- Komentirat smiju samo ulogirani korisnici i to samo gost i ugostitelj. -->
             <div v-if="this.$store.getters.getUser">
             <a v-if="this.$store.getters.getUser.uloga == 'gost' || this.$store.getters.getUser.uloga == 'ugostitelj'">
-              <form @submit.prevent="handleSubmit" class="comment-form">
+              <form @submit.prevent="handleSubmitComment" class="comment-form">
                 <input type="text" v-model="comment" class="comment-input" placeholder="Napišite komentar...">
                 <button class="comment-submit">Ostavi komentar</button> <!-- Ovo smo sakrili -->
               </form>
@@ -43,30 +61,47 @@
           </div>
         </div>
 
+        <!-- Popup forma za uredit recenziju -->
+        <div v-if="this.showEditForm">
+          <EditReviewForm
+            :id=this.id
+            :naslov=review_title
+            :tekst=review_text
+          />
+        </div>
+
     </div>
 </template>
 
 
 
 <script>
+import EditReviewForm from '../components/EditReviewForm.vue'
+
 export default {
         name: 'ReviewCard',
+        components: {
+          EditReviewForm
+        },
         data(){
           return{
               edited: true,
               comment: '',
-              comments: []
+              comments: [],
+              showEditForm: false,
+              showEditComment: false,
+              editingCommet: ''
           }
         },
         props: {
-            user_id: String, // Trenutni ulogirani user.
+            user_id: Number, // User_id od korisnika koji je napisao ovu recenziju.
             review_text: String, // Tekst recenzije.
             review_title: String, // Naslov recenzije.
             id: Number // id recenzije, ovo koristiti kako bi dobio sve komentare te recenzije.
         },
         methods:{
           // Komentiranje recenzije.
-          async handleSubmit(){
+          async handleSubmitComment(){
             // Komentar ne smije biti prazan.
             if(this.comment != ''){
               console.log("User: " + this.$store.getters.getUser.id + " je ostavio komentar: " + this.comment + " na recenziji: " + this.id);
@@ -101,7 +136,7 @@ export default {
             }
           },
           // Brisanje komentara s recenzije.
-          async handleDelete(comment){ // comment sadrži sve informacije o komentaru(text, user_id, comment_id mi sigurno trebaju)
+          async handleDeleteComment(comment){ // comment sadrži sve informacije o komentaru(text, user_id, comment_id mi sigurno trebaju)
             console.log("Obrisi ovaj komentar: " + comment.text)
             let text = "Are you sure about that?";
             if (confirm(text) == true) {
@@ -130,6 +165,81 @@ export default {
             } else {
               text = "You canceled!";
             }
+          },
+          async handleEditComment(comment){ // comment sadrži sve informacije o komentaru(text, user_id, comment_id mi sigurno trebaju)
+            console.log("Uredi ovaj komentar: " + comment.text)
+            let text = "Are you sure about that?";
+            if (confirm(text) == true) {
+                // Napravi DELETE request na server sa id_komentara.
+                const putOptions = {
+                    method: "PUT",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + localStorage.getItem('token') 
+                    },
+                    body: JSON.stringify(
+                      {  
+                        "comment_id": comment.comment_id
+                      }
+                    )
+                };
+                // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
+                const response = await fetch("http://localhost:3000/comments", putOptions);
+                console.log(response);
+                // const data = await response.json();
+                if(response.status == 200){
+                  // Ako je DELETE uspjesan makni taj komentar iz liste komentara bez refresha stranice, komentar ce bit "lazno" maknut ali je zapravo maknut i nakon refresha.
+                  this.comments = this.comments.filter(komentar => komentar != comment);
+                }
+
+            } else {
+              text = "You canceled!";
+            }
+          },
+          async handleDeleteReview(id){ // comment sadrži sve informacije o komentaru(text, user_id, comment_id mi sigurno trebaju)
+            console.log("Obrisi ovu recenizju: " + id)
+            let text = "Are you sure about that?";
+            if (confirm(text) == true) {
+                // Napravi DELETE request na server sa id recenzije.
+                const deleteOptions = {
+                    method: "DELETE",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + localStorage.getItem('token') 
+                    },
+                    body: JSON.stringify(
+                      {  
+                        "review_id": id
+                      }
+                    )
+                };
+                // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
+                const response = await fetch("http://localhost:3000/review", deleteOptions);
+                console.log(response);
+                // const data = await response.json();
+                if(response.status == 200){
+                  // Ako je DELETE uspjesan napravi refresh stranice.
+                  this.$router.go();
+                }
+
+            } else {
+              text = "You canceled!";
+            }
+          },
+          openEditForm(){
+            console.log("You are trying to open review edit form for review: " + this.id)
+            this.showEditForm = !this.showEditForm;
+          },
+          openEditComment(comment){
+            console.log("You are trying to open comment edit input for comment: " + this.id)
+            this.showEditComment = !this.showEditComment;
+            if(!this.editingCommet){
+               this.editingCommet = comment.text;
+            }
+            else{
+              this.editingCommet = '';
+            }
+           
           },
           // Dohvat svih komentara za određenu recenziju.
           async fetchComments(){
@@ -319,6 +429,7 @@ h2 {
 .comment-input:hover{
   border: solid 2px #006B86;
 }
+
 .comment-submit{
   display: none;
 }
@@ -333,6 +444,43 @@ h2 {
 
 .comment-delete:hover{
   background-color: rgba(255, 0, 0, 0.103);
+}
+
+.comment-edit{
+  margin-top: 5px;
+  color: rgb(255, 187, 0);
+  background-color: white;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  border: 1px grey;
+}
+
+.comment-edit:hover{
+  background-color: rgba(255, 187, 0, 0.151);
+}
+
+.delete{
+  color: red;
+  background-color: white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 10px;
+  border: 1px grey;
+}
+
+.delete:hover{
+  background-color: rgba(255, 0, 0, 0.103);
+}
+
+.edit{
+  color: rgb(255, 187, 0);
+  background-color: white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 10px;
+  border: 1px grey;
+}
+
+.edit:hover{
+  background-color: rgba(255, 187, 0, 0.151);
 }
 
 </style>

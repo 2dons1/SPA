@@ -65,11 +65,12 @@ export default{
                 method: "GET",
                 headers: { 
                     "Content-Type": "application/json",
-                    "Authorization": 'Bearer ' + localStorage.getItem('token') 
+                    "Authorization": 'Bearer ' + localStorage.getItem('token') // Ovo mi ne treba, anonimi korisnik isto moze pogledat ovo.
                 },
             }
 
-            const res = await fetch('http://localhost:3000/restaurants?' + new URLSearchParams({grad: city}), getOptions);
+            //DONS: const res = await fetch('http://localhost:3001/restaurants?' + new URLSearchParams({grad: city}), getOptions);
+            const res = await fetch('http://localhost:3000/objects?' + new URLSearchParams({grad: city}), getOptions);
             const data = await res.json();
             // console.log(data);
             return data;

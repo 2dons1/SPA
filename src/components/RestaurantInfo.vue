@@ -145,7 +145,7 @@ export default {
                 console.log(data)
                 
                 // Objekt je sada odobren, posalji admina natrag na njegov panel za odobravanje.
-                // this.$router.push({ name: 'AdminPanel' })
+                this.$router.push({ name: 'AdminPanel' })
             } 
             else {
                 razlog = "You canceled!";

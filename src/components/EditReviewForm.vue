@@ -1,8 +1,6 @@
 <template>
     <div>
-        <form @submit.prevent="handleSubmit" id="review">
-            <h3 class="title">Ostavi recenziju</h3>
-
+        <form @submit.prevent="handleEditReview" id="review">
             <label>Naslov: </label>
             <input v-model="title" type="text" required>
 
@@ -10,13 +8,11 @@
             <textarea v-model="review" rows="4" cols="50" required></textarea>
 
             <div class="submit">
-                <button>Recenziraj</button>
+                <button>Uredi</button>
             </div>
             <p class="thank-you" v-if="success">Hvala na recenziranju!</p>
             <p class="error" v-if="error">Desila se greška!</p>
         </form>
-        <p >Naslov recenzije za objekt {{ id }}: {{ title }}</p>
-        <p >Tekst recenzije za objekt {{ id }}: {{ review }}</p>
 
     </div>
 </template>
@@ -24,9 +20,11 @@
 
 <script>
 export default {
-    name: 'ReviewForm',
+    name: 'EditReviewForm',
     props: {
-      id: String
+      id: Number, // Id recenzije koju trenutno zelimo uredit.
+      naslov: String, // Naslov recenzije koju uređujemo.
+      tekst: String, // Tekst recenzije koju uređujemo.
     },
     data(){
         return{
@@ -36,23 +34,41 @@ export default {
            error: false,
         }
     },
+    watch: {
+        naslov: {
+            immediate: true,
+            handler (newVal) {
+                this.title = newVal;
+            }
+        },
+        tekst: {
+            immediate: true,
+            handler (newVal) {
+                this.review = newVal;
+            }
+        },
+    },
     methods:{
-        async handleSubmit(){
+        async handleEditReview(){
             // Objavi recenziju, treba mi tekst recenzije, tko objavljuje recenziju i za koji objekt.
-            const postOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+            const putOptions = {
+                method: "PUT",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": 'Bearer ' + localStorage.getItem('token') 
+                },
                 body: JSON.stringify(
                     {  
                         "title": this.title,
                         "text": this.review,
                         "user_id": this.$store.getters.getUser.id,
-                        "restaurant_id": this.id
+                        // "restaurant_id": this.id // misim da mi ovo ne treba, kad uređujem neku recenziju treba mi id te recenzije i nove vrijednosti.
+                        "review_id": this.id
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/review", postOptions);
+            const response = await fetch("http://localhost:3000/review", putOptions);
             const data = await response.json();
             console.log(data)
             console.log("test")
@@ -66,11 +82,11 @@ export default {
 <style scoped>
 
 form{
-    max-width: 420px;
-    margin: 30px auto;
+    /* max-width: 420px; */
+    margin: 5px auto;
     background: #eee;
     text-align: left;
-    padding: 40px;
+    padding: 20px;
     border-radius: 10px;
 }
 
@@ -127,7 +143,6 @@ button:active{
     border-radius: 10px;
     color: black;
 }
-
 
 textarea{
   resize: none;
