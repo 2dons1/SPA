@@ -3,10 +3,12 @@
         <div class="cards"> 
             <div v-bind:key="review.name" v-for="review in reviews">
                 <ReviewCard
-                    :user_id = review.user_id 
-                    :review_text = review.review_text
-                    :review_title = review.review_title
-                    :id = review.id
+                    :gostUsername = review.gostUsername
+                    :datumStvaranja = review.datumStvaranja
+                    :naslov = review.naslov
+                    :tekst = review.tekst
+                    :uređeno = review.uređeno
+                    :objekt = review.objektSid
                 />
             </div>
         </div>
@@ -27,8 +29,14 @@ export default{
         ReviewCard
     },
     methods:{
-        async fetchReviews(){
-            const res = await fetch('http://localhost:3000/restaurant/' + this.id + '/reviews');
+       async fetchReviews(){
+            const getOptions = {
+                    method: "GET",
+                    headers: { 
+                        "Content-Type": "application/json",
+                    }
+            };
+            const res = await fetch('http://localhost:3000/objects/' + this.id + '/reviews', getOptions); // Ovo treba mijenjat.
             const data = await res.json();
             return data;
         },

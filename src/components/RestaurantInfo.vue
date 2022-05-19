@@ -8,8 +8,8 @@
         <div class="info">
             <div v-if="this.$store.getters.getUser" class="buttons"> <!-- Prikazi ovo samo ako je korisnik ulogiran-->
                 <a v-if="this.$store.getters.getUser.uloga == 'gost' " href="#review"><button class="btn">Napisi recenziju</button></a> 
-                <a v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == vlasnik" href="#edit"><button class="btn-edit">Uredi</button></a> <!-- Prikazi samo ako je korisnik ugostitelj i ovo je njegov objekt -->
-                <button v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == vlasnik" class="btn-delete" @click="deleteObject">Ukloni</button> <!-- Prikazi samo ako je korinsik ugostitelj i ovo je njegov objekt -->
+                <a v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == 'vlasnik.sid'" href="#edit"><button class="btn-edit">Uredi</button></a> <!-- Prikazi samo ako je korisnik ugostitelj i ovo je njegov objekt -->
+                <button v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == 'vlasnik.sid'" class="btn-delete" @click="deleteObject">Ukloni</button> <!-- Prikazi samo ako je korinsik ugostitelj i ovo je njegov objekt -->
                 <button v-if="this.$store.getters.getUser.uloga == 'admin'" class="btn-approve" @click="approveObject">Odobri</button>
                 <button v-if="this.$store.getters.getUser.uloga == 'admin'" class="btn-deny" @click="denyObject">Odbi</button>
             </div>
@@ -39,6 +39,7 @@
                 <div class="grid-item">
                     <h4>Lokacija: </h4>
                     <p>Adresa: {{ adresa }}</p>
+                    <p v-if="grad">Grad: {{ grad }}</p> <!-- Ako dodam grad.naziv bacit ce mi error je se ne stigne poslat cijeli objekt prije crtanja.-->
                     <p>Telefon: {{ kontaktBroj }}</p>
                 </div>
             </div>
@@ -51,14 +52,14 @@
 export default {
     name: "RestaurantInfo",
     props: {
-        id: Number,
+        id: String,
         naziv: String,
         adresa: String,
         radnoVrijeme: String,
         kontaktBroj: String,
         datumStvaranja: String,
         potvrden: Boolean,
-        vlasnik: Number,
+        // vlasnik: Object,
         vrsta: String,
         grad: String,
         fotografije: Array,

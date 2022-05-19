@@ -68,28 +68,29 @@ export default {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
-                     "Authorization": 'Bearer ' + localStorage.getItem('token')
+                     "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
                 },
                 body: JSON.stringify(
                     { 
-                        "name": this.name, 
-                        "address": this.address,
-                        "city": this.city,
-                        "phone": this.phone,
-                        "type": this.type,
-                        "workHours": this.workHours,
-                        "amenities": this.amenities,
-                        "user_id": this.$store.getters.getUser.id, // Procitaj iz vuex koji je user trenutno ulogiran. 
+                        "naziv": this.name, 
+                        "adresa": this.address,
+                        "grad": this.city,
+                        "kontaktBroj": this.phone,
+                        "vrsta": this.type,
+                        "radnoVrijeme": this.workHours,
+                        "pogodnosti": this.amenities,
+                        "vlasnik": this.$store.getters.getUser.id, // Procitaj iz vuex koji je user trenutno ulogiran. 
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/addRestaurant", postOptions);
+            const response = await fetch("http://localhost:3000/objects", postOptions);
+            console.log(response)
             const data = await response.json();
             console.log(data)
 
             // Reload page.
-            this.$router.go()
+            // this.$router.go()
         }
     }
 }

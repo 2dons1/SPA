@@ -17,14 +17,14 @@
 export default {
         name: 'RestaurantCard',
         props: {
-            id: Number,
+            id: String,
             naziv: String,
             adresa: String,
             radnoVrijeme: String,
             kontaktBroj: String,
             datumStvaranja: String,
             potvrden: Boolean,
-            vlasnik: Number,
+            // vlasnik: Number, // vlasnik mi ne treba
             vrsta: String,
             grad: String,
             fotografije: Array,

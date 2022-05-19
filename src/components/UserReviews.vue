@@ -3,10 +3,12 @@
         <div class="cards"> 
             <div v-bind:key="review.name" v-for="review in reviews">
                 <ReviewCard
-                    :user_id = review.user_id
-                    :review_text = review.review_text
-                    :review_title = review.review_title
-                    :id = review.id
+                    :gostUsername = review.gostUsername
+                    :datumStvaranja = review.datumStvaranja
+                    :naslov = review.naslov
+                    :tekst = review.tekst
+                    :uređeno = review.uređeno
+                    :objekt = review.objektSid
                 />
             </div>
         </div>
@@ -27,7 +29,14 @@ export default{
     },
     methods:{
         async fetchReviews(){
-            const res = await fetch('http://localhost:3000/restaurant/' + 4 + '/reviews'); // Daj mi sve recenzije nekog korisnika. Treba mi id recenzije tu isto.
+            const getOptions = {
+                    method: "GET",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                    }
+            };
+            const res = await fetch('http://localhost:3000/users/' + this.$store.getters.getUser.username + '/reviews', getOptions);
             const data = await res.json();
             return data;
         },

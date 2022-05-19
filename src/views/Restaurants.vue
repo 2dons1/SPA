@@ -1,6 +1,7 @@
 <template>
     <div>
 
+        <!-- Filteri -->
         <div class="filters">
             <div class="search">
                 <input type="text" v-model="input" placeholder="Pretraži objekte prema imenu..." />
@@ -20,17 +21,17 @@
             </div>
         </div>
         
+        <!-- Kartice -->
         <div class="cards"> 
             <div v-bind:key="restaurant.naziv" v-for="restaurant in filteredRestaurants">
                 <RestaurantCard class="card" 
-                    :id=restaurant.id
+                    :id=restaurant.sid
                     :naziv=restaurant.naziv
                     :adresa=restaurant.adresa
                     :radnoVrijeme=restaurant.radnoVrijeme
                     :kontaktBroj=restaurant.kontaktBroj
                     :datumStvaranja=restaurant.datumStvaranja
                     :potvrden=restaurant.potvrden
-                    :vlasnik=restaurant.vlasnik
                     :vrsta=restaurant.vrsta
                     :grad=restaurant.grad
                     :fotografije=restaurant.fotografije
@@ -70,9 +71,8 @@ export default{
             }
 
             //DONS: const res = await fetch('http://localhost:3001/restaurants?' + new URLSearchParams({grad: city}), getOptions);
-            const res = await fetch('http://localhost:3000/objects?' + new URLSearchParams({grad: city}), getOptions);
+            const res = await fetch('http://localhost:3000/objects?' + new URLSearchParams({'city': city}), getOptions);
             const data = await res.json();
-            // console.log(data);
             return data;
         },
         async handleSubmit(){
@@ -80,7 +80,7 @@ export default{
             
             // Ako je odabran 'all' samo refreshaj stranicu.
             if(this.selected == 'all'){
-                this.$router.go()
+                this.restaurants = await this.fetchRestaurants('');
             }
             // Inače saljem novi zahtijev ili cu filtrirat postojece???
             else{

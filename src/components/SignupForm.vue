@@ -68,15 +68,15 @@ export default {
                 body: JSON.stringify(
                     { 
                         "username": this.username,
+                        "pwd": this.password,
                         "ime": this.name, 
                         "prezime": this.surname,
                         "email": this.email,
                         "uloga": this.role,
-                        "pwd": this.password,
                     }
                 )
             };
-            const response = await fetch("http://localhost:3000/register", postOptions); // '/users'
+            const response = await fetch("http://localhost:3000/users", postOptions);
             
             if(response.status == 201){
                 this.$router.push({ name: 'LoginForm' })

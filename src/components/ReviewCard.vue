@@ -2,22 +2,23 @@
     <div class="card" style="width: 18rem;">
         <!-- Informacije o recenziji-->
         <div class="card-body">
-            <h4>{{ user_id }} - {{ review_title }}</h4>
-            <p class="card-text">{{review_text}}</p>
+            <h4>{{ gostUsername }} - {{ naslov }}</h4>
+            <p class="card-text">{{ tekst }}</p>
 
             <!-- Prikazi ovo samo ako je korsnik ulogiran i ako je ovo njegova recenzije.-->
             <div v-if="this.$store.getters.getUser">
-              <button  v-if="this.user_id == this.$store.getters.getUser.id" class="delete" v-on:click="handleDeleteReview(this.id)">Ukloni</button>
+              <button  v-if="this.gostUsername == this.$store.getters.getUser.username" class="delete" v-on:click="handleDeleteReview(this.id)">Ukloni</button>
             </div>
             <div v-if="this.$store.getters.getUser">
-              <button  v-if="this.user_id == this.$store.getters.getUser.id" class="edit" v-on:click="openEditForm()">Uredi</button>
+              <button  v-if="this.gostUsername == this.$store.getters.getUser.username" class="edit" v-on:click="openEditForm()">Uredi</button>
             </div>
 
         </div>
 
         <div class="card-footer">
-          <p class="timestamp">Objavljeno: 10.3.2022 15:46</p> <!-- Ovo mi treba backend dat--->
-          <p v-if="edited" class="edited">Edited</p> <!-- Ovo mi treba backend dat--->
+          <p class="timestamp">Objavljeno:{{ datumStvaranja }}</p>
+          <p v-if="uređeno" class="edited">Edited</p>
+          <p></p> <!-- Spacer -->
         </div>
 
         <!-- KOMENTARI, makni ovo kasnije u zasebnu komponentu. -->
@@ -65,8 +66,8 @@
         <div v-if="this.showEditForm">
           <EditReviewForm
             :id=this.id
-            :naslov=review_title
-            :tekst=review_text
+            :naslov=naslov
+            :tekst=tekst
           />
         </div>
 
@@ -97,7 +98,14 @@ export default {
             user_id: Number, // User_id od korisnika koji je napisao ovu recenziju.
             review_text: String, // Tekst recenzije.
             review_title: String, // Naslov recenzije.
-            id: Number // id recenzije, ovo koristiti kako bi dobio sve komentare te recenzije.
+            id: Number, // id recenzije, ovo koristiti kako bi dobio sve komentare te recenzije.
+
+            gostUsername: String,
+            datumStvaranja: String,
+            naslov: String,
+            tekst: String,
+            uređeno: Boolean,
+            objekt: Object
         },
         methods:{
           // Komentiranje recenzije.
@@ -427,7 +435,7 @@ h2 {
 }
 
 .comment-input:hover{
-  border: solid 2px #006B86;
+  /* border: solid 2px #006B86; */
 }
 
 .comment-submit{

@@ -51,11 +51,11 @@ export default {
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/login", postOptions); // '/auth/login'
+            const response = await fetch("http://localhost:3000/auth/login", postOptions); // '/auth/login'
             const data = await response.json();
 
             // Login je uspjesan.
-            if(data.status === 200){
+            if(response.status === 200){
                 this.error = '';
 
                 // Postavi usera i njegov access_token u local storage.

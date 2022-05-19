@@ -2,19 +2,19 @@
     <div>
             <!-- <h3>RestaurantId: {{$route.params.id}}</h3> -->
             <!-- Restaurant Info -->
+            <!-- Treba mi vlasnik objekta ovdje-->
             <RestaurantInfo 
-                :id=restaurantInfo[0].id
-                :naziv=restaurantInfo[0].naziv
-                :adresa=restaurantInfo[0].adresa
-                :radnoVrijeme=restaurantInfo[0].radnoVrijeme
-                :kontaktBroj=restaurantInfo[0].kontaktBroj
-                :datumStvaranja=restaurantInfo[0].datumStvaranja
-                :potvrden=restaurantInfo[0].potvrden
-                :vlasnik=restaurantInfo[0].vlasnik
-                :vrsta=restaurantInfo[0].vrsta
-                :grad=restaurantInfo[0].grad
-                :fotografije=restaurantInfo[0].fotografije
-                :pogodnosti=restaurantInfo[0].pogodnosti
+                :id=restaurantInfo.sid
+                :naziv=restaurantInfo.naziv
+                :adresa=restaurantInfo.adresa
+                :radnoVrijeme=restaurantInfo.radnoVrijeme
+                :kontaktBroj=restaurantInfo.kontaktBroj
+                :datumStvaranja=restaurantInfo.datumStvaranja
+                :potvrden=restaurantInfo.potvrden
+                :vrsta=restaurantInfo.vrsta
+                :grad=restaurantInfo.grad
+                :fotografije=restaurantInfo.fotografije
+                :pogodnosti=restaurantInfo.pogodnosti
             />
             
             <!-- Restaurant Reviews -->
@@ -30,16 +30,16 @@
                 v-if="this.$store.getters.getUser.uloga == 'gost'"/>
 
                 <!-- Ako je korisnik ugostitelj i ujedno tome i vlasnik ovog objekta onda stavi formu za ažuriranje podataka -->
-                <div v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == restaurantInfo[0].vlasnik" id="edit">
+                <div v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == 'restaurantInfo.vlasnik'" id="edit">
                 <EditObjectForm  
-                    :ime=restaurantInfo[0].naziv
-                    :adresa=restaurantInfo[0].adresa
-                    :telefon=restaurantInfo[0].kontaktBroj
-                    :workingHours=restaurantInfo[0].radnoVrijeme
-                    :pogodnosti=restaurantInfo[0].pogodnosti
-                    :kratica=restaurantInfo[0].vrsta
-                    :id=restaurantInfo[0].id
-                    :grad=restaurantInfo[0].grad
+                    :ime=restaurantInfo.naziv
+                    :adresa=restaurantInfo.adresa
+                    :telefon=restaurantInfo.kontaktBroj
+                    :workingHours=restaurantInfo.radnoVrijeme
+                    :pogodnosti=restaurantInfo.pogodnosti
+                    :kratica=restaurantInfo.vrsta
+                    :id=restaurantInfo.sid
+                    :grad=restaurantInfo.grad
                 />
                 </div>
             </div>
@@ -68,9 +68,9 @@ export default{
     },
     methods:{
         async fetchRestaurant(){
-            const res = await fetch('http://localhost:3000/restaurant/' + this.$route.params.id);
+            //DONS: const res = await fetch('http://localhost:3000/restaurant/' + this.$route.params.id);
+            const res = await fetch('http://localhost:3000/objects/' + this.$route.params.id);
             const data = await res.json();
-            console.log(data)
             return data;
         },
     },
@@ -79,8 +79,7 @@ export default{
     },
     data(){
         return {
-            restaurantInfo: [{
-            }],
+            restaurantInfo: {},
             restaurantReviews: [],
         }
     },

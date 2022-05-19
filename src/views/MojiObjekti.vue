@@ -10,13 +10,17 @@
         <div class="cards"> 
             <div v-bind:key="restaurant.naziv" v-for="restaurant in restaurants">
                 <RestaurantCard class="card" 
+                    :id=restaurant.sid
                     :naziv=restaurant.naziv
-                    :image=restaurant.image
-                    :kratica=restaurant.kratica
-                    :radnoVrijeme=restaurant.radnoVrijeme
                     :adresa=restaurant.adresa
-                    :telefon=restaurant.telefon
-                    :id=restaurant.id
+                    :radnoVrijeme=restaurant.radnoVrijeme
+                    :kontaktBroj=restaurant.kontaktBroj
+                    :datumStvaranja=restaurant.datumStvaranja
+                    :potvrden=restaurant.potvrden
+                    :vrsta=restaurant.vrsta
+                    :grad=restaurant.grad
+                    :fotografije=restaurant.fotografije
+                    :pogodnosti=restaurant.pogodnosti
                 />
             </div>
         </div>
@@ -44,7 +48,14 @@ export default{
     },
     methods:{
         async fetchRestaurants(){
-            const res = await fetch('http://localhost:3000/restaurants'); // Ovo treba promjeniti na neki drugi resurs koji ce vratiti objekte samo za tog ugostitelja.
+            const getOptions = {
+                    method: "GET",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                    }
+            };
+            const res = await fetch('http://localhost:3000/users/' + this.$store.getters.getUser.username + '/objects', getOptions);
             const data = await res.json();
             return data;
         },
