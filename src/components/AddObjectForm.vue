@@ -79,7 +79,7 @@ export default {
                         "vrsta": this.type,
                         "radnoVrijeme": this.workHours,
                         "pogodnosti": this.amenities,
-                        "vlasnik": this.$store.getters.getUser.id, // Procitaj iz vuex koji je user trenutno ulogiran. 
+                        "vlasnik": this.$store.getters.getUser.username, // Procitaj iz vuex koji je user trenutno ulogiran. 
                     }
                 )
             };

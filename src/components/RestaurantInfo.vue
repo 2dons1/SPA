@@ -8,8 +8,8 @@
         <div class="info">
             <div v-if="this.$store.getters.getUser" class="buttons"> <!-- Prikazi ovo samo ako je korisnik ulogiran-->
                 <a v-if="this.$store.getters.getUser.uloga == 'gost' " href="#review"><button class="btn">Napisi recenziju</button></a> 
-                <a v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == 'vlasnik.sid'" href="#edit"><button class="btn-edit">Uredi</button></a> <!-- Prikazi samo ako je korisnik ugostitelj i ovo je njegov objekt -->
-                <button v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == 'vlasnik.sid'" class="btn-delete" @click="deleteObject">Ukloni</button> <!-- Prikazi samo ako je korinsik ugostitelj i ovo je njegov objekt -->
+                <a v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.username == vlasnik" href="#edit"><button class="btn-edit">Uredi</button></a> <!-- Prikazi samo ako je korisnik ugostitelj i ovo je njegov objekt -->
+                <button v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.username == vlasnik" class="btn-delete" @click="deleteObject">Ukloni</button> <!-- Prikazi samo ako je korinsik ugostitelj i ovo je njegov objekt -->
                 <button v-if="this.$store.getters.getUser.uloga == 'admin'" class="btn-approve" @click="approveObject">Odobri</button>
                 <button v-if="this.$store.getters.getUser.uloga == 'admin'" class="btn-deny" @click="denyObject">Odbi</button>
             </div>
@@ -59,7 +59,7 @@ export default {
         kontaktBroj: String,
         datumStvaranja: String,
         potvrden: Boolean,
-        // vlasnik: Object,
+        vlasnik: String,
         vrsta: String,
         grad: String,
         fotografije: Array,
@@ -74,22 +74,17 @@ export default {
                     method: "DELETE",
                     headers: { 
                         "Content-Type": "application/json",
-                        "Authorization": 'Bearer ' + localStorage.getItem('token') 
-                    },
-                    body: JSON.stringify(
-                        {  
-                            "user_id": this.$store.getters.getUser.id,
-                            "restaurant_id": this.id
-                        }
-                    )
+                        "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                    }
                 };
                 // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-                const response = await fetch("http://localhost:3000/restaurants", deleteOptions);
-                const data = await response.json();
-                console.log(data)
-                
+                const response = await fetch("http://localhost:3000/objects/" + this.id, deleteOptions);
+                if(response.status == 200){
                 // Objekt je sada izbrisan, posalji korisnika natrag na "MyRestaurants".
                 this.$router.push({ name: 'MojiObjekti' })
+                }
+                
+                
             } 
             else {
                 text = "You canceled!";

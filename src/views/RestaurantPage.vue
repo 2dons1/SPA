@@ -15,6 +15,7 @@
                 :grad=restaurantInfo.grad
                 :fotografije=restaurantInfo.fotografije
                 :pogodnosti=restaurantInfo.pogodnosti
+                :vlasnik=restaurantInfo.vlasnik
             />
             
             <!-- Restaurant Reviews -->
@@ -30,7 +31,7 @@
                 v-if="this.$store.getters.getUser.uloga == 'gost'"/>
 
                 <!-- Ako je korisnik ugostitelj i ujedno tome i vlasnik ovog objekta onda stavi formu za ažuriranje podataka -->
-                <div v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.id == 'restaurantInfo.vlasnik'" id="edit">
+                <div v-if="this.$store.getters.getUser.uloga == 'ugostitelj' && this.$store.getters.getUser.username == restaurantInfo.vlasnik" id="edit">
                 <EditObjectForm  
                     :ime=restaurantInfo.naziv
                     :adresa=restaurantInfo.adresa

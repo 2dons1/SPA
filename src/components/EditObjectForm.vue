@@ -56,7 +56,7 @@ export default {
         workingHours: String,
         pogodnosti: Array,
         kratica: String,
-        id: Number,
+        id: String,
         grad: String
     },
     data(){
@@ -125,18 +125,18 @@ export default {
                 method: "PUT",
                 headers: { 
                     "Content-Type": "application/json", 
-                    "Authorization": 'Bearer ' + localStorage.getItem('token')
+                    "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
                 },
                 body: JSON.stringify(
                     { 
-                        "name": this.name, 
-                        "address": this.address,
-                        "city": this.city,
-                        "phone": this.phone,
-                        "type": this.type,
-                        "workHours": this.workHours,
-                        "amenities": this.amenities,
-                        "user_id": this.$store.getters.getUser.id,
+                        "naziv": this.name, 
+                        "adresa": this.address,
+                        "grad": this.city,
+                        "kontaktBroj": this.phone,
+                        "vrsta": this.type,
+                        "radnoVrijeme": this.workHours,
+                        "pogodnosti": this.amenities,
+                        "vlasnik": this.$store.getters.getUser.username, 
                     }
                 )
             };

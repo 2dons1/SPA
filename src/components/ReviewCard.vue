@@ -27,21 +27,21 @@
           <div class="dropdown-content">
             <!-- Ovo je jedan komentar, tj. for petlja za sve komentare -->
             <a v-for="comment in comments" v-bind:key="comment" >
-              {{comment.username + ": " + comment.text}}
+              {{comment.username + ": " + comment.tekst}}
 
               <!-- Stavi ovo samo ako je vlasnik komentara ujedno i trenutni ulogirani korisnik.-->
               <div v-if="this.$store.getters.getUser">
 
-                <form @submit.prevent v-if="comment.user_id == this.$store.getters.getUser.id">
+                <form @submit.prevent v-if="comment.username == this.$store.getters.getUser.username">
                   <button class="comment-delete" v-on:click="handleDeleteComment(comment)">Ukloni komentar</button>
                 </form>
 
-                <form @submit.prevent v-if="comment.user_id == this.$store.getters.getUser.id">
+                <form @submit.prevent v-if="comment.username == this.$store.getters.getUser.username">
                   <button class="comment-edit" v-on:click="openEditComment(comment)">Uredi komentar</button>
                 </form>
 
-                <form v-if="showEditComment && comment.text == this.editingCommet" @submit.prevent="handleEditComment(comment)" class="comment-form">
-                  <input type="text" :value="comment.text" class="comment-input" placeholder="Napišite komentar...">
+                <form v-if="showEditComment && comment.tekst == this.editingComment" @submit.prevent="handleEditComment(comment)" class="comment-form">
+                  <input type="text" v-model="editingCommentTekst" class="comment-input" :placeholder="comment.tekst">
                   <button class="comment-submit">Ostavi komentar</button> <!-- Ovo smo sakrili -->
                 </form>
 
@@ -91,7 +91,8 @@ export default {
               comments: [],
               showEditForm: false,
               showEditComment: false,
-              editingCommet: ''
+              editingComment: '',
+              editingCommentTekst: ''
           }
         },
         props: {
@@ -116,36 +117,35 @@ export default {
               // Napravi POST request na server s komentarom, id_korisnika, id_recenzije koju komentiras.
               const postOptions = {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                  "Content-Type": "application/json",
+                  "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                },
                 body: JSON.stringify(
                     { 
-                        "user_id": this.$store.getters.getUser.id,
-                        "review_id": this.id,
-                        "comment_text": this.comment
+                        "tekst": this.comment
                     }
                 )
               };
-              const response = await fetch("http://localhost:3000/comments", postOptions);
+              const response = await fetch('http://localhost:3000/reviews/' + this.objekt.sid + '/' + this.gostUsername, postOptions);
               console.log(response)
               if(response.status == 201){
                 // Ako je POST uspjesan dodaj komentar u listu komentara bez refresha stranice, komentar ce biti "lazno" dodan ali je zapravo tamo i nakon refresha.
-                this.comments.push(
+                /* this.comments.push(
                   {
-                    text: this.comment,
-                    user_id: this.$store.getters.getUser.id,
-                    username: this.$store.getters.getUser.username,
-                    review_id: this.id,
-                    comment_id: 4 // Ovo mi treba backend vratiti.
+                    "username": this.gostUsername,
+                    "tekst": this.comment,
                   }
                 );
                 // Pobrisi input field.
-                this.comment = '';
+                this.comment = ''; */
+                this.$router.go()
               }
             }
           },
           // Brisanje komentara s recenzije.
           async handleDeleteComment(comment){ // comment sadrži sve informacije o komentaru(text, user_id, comment_id mi sigurno trebaju)
-            console.log("Obrisi ovaj komentar: " + comment.text)
+            console.log("Obrisi ovaj komentar: " + comment.tekst)
             let text = "Are you sure about that?";
             if (confirm(text) == true) {
                 // Napravi DELETE request na server sa id_komentara.
@@ -153,16 +153,11 @@ export default {
                     method: "DELETE",
                     headers: { 
                         "Content-Type": "application/json",
-                        "Authorization": 'Bearer ' + localStorage.getItem('token') 
-                    },
-                    body: JSON.stringify(
-                      {  
-                        "comment_id": comment.comment_id
-                      }
-                    )
+                        "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                    }
                 };
                 // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-                const response = await fetch("http://localhost:3000/comments", deleteOptions);
+                const response = await fetch("http://localhost:3000/comments/" + comment.id, deleteOptions);
                 console.log(response);
                 // const data = await response.json();
                 if(response.status == 200){
@@ -175,29 +170,29 @@ export default {
             }
           },
           async handleEditComment(comment){ // comment sadrži sve informacije o komentaru(text, user_id, comment_id mi sigurno trebaju)
-            console.log("Uredi ovaj komentar: " + comment.text)
+            console.log("Uredi ovaj komentar: " + comment.tekst)
             let text = "Are you sure about that?";
             if (confirm(text) == true) {
-                // Napravi DELETE request na server sa id_komentara.
+                
                 const putOptions = {
                     method: "PUT",
                     headers: { 
                         "Content-Type": "application/json",
-                        "Authorization": 'Bearer ' + localStorage.getItem('token') 
+                        "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
                     },
                     body: JSON.stringify(
                       {  
-                        "comment_id": comment.comment_id
+                        "tekst": this.editingCommentTekst
                       }
                     )
                 };
+
                 // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-                const response = await fetch("http://localhost:3000/comments", putOptions);
+                const response = await fetch("http://localhost:3000/comments/" + comment.id, putOptions);
                 console.log(response);
                 // const data = await response.json();
                 if(response.status == 200){
-                  // Ako je DELETE uspjesan makni taj komentar iz liste komentara bez refresha stranice, komentar ce bit "lazno" maknut ali je zapravo maknut i nakon refresha.
-                  this.comments = this.comments.filter(komentar => komentar != comment);
+                  this.$router.go()
                 }
 
             } else {
@@ -234,13 +229,13 @@ export default {
             this.showEditForm = !this.showEditForm;
           },
           openEditComment(comment){
-            console.log("You are trying to open comment edit input for comment: " + this.id)
+            console.log("You are trying to open comment edit input for comment: " + comment.id)
             this.showEditComment = !this.showEditComment;
-            if(!this.editingCommet){
-               this.editingCommet = comment.text;
+            if(!this.editingComment){
+               this.editingComment = comment.tekst;
             }
             else{
-              this.editingCommet = '';
+              this.editingComment = '';
             }
            
           },
@@ -251,45 +246,17 @@ export default {
                 method: "GET",
                 headers: { 
                     "Content-Type": "application/json",
-                    "Authorization": 'Bearer ' + localStorage.getItem('token') 
-                },
-                body: JSON.stringify(
-                  {  
-                    "review_id": this.id // Treba mi sid od odbjekta i username korisnika na cijoj su recenziji komentari.
-                  }
-                )
+                }
             }
 
-            const res = await fetch('http://localhost:3000/comments', getOptions);
+            const res = await fetch('http://localhost:3000/reviews/' + this.objekt.sid + '/' + this.gostUsername, getOptions);
             const data = await res.json();
             // console.log(data);
             return data;
           },
         },
         async created(){
-          this.comments = [ // await this.fetchComments();
-              {
-                text: "Moje iskustvo je bilo jako slicno navedenom, slazem se s recenzijom",
-                user_id: 2,
-                username: "2Dons",
-                review_id: 1,
-                comment_id: 1
-              },
-              {
-                text: "Hvala na ostavljenoj recenziji.",
-                user_id: 1,
-                username: "Vlasnik",
-                review_id: 1,
-                comment_id: 2
-              },
-              {
-                text: "Ja sam isto bio tu, meni je bilo grozno. :(",
-                user_id: 3,
-                username: "Sosko",
-                review_id: 1,
-                comment_id: 3
-              },
-            ]
+          this.comments = await this.fetchComments();
         },
     }
 
@@ -427,10 +394,6 @@ h2 {
   border-radius: 10px;
   border: none;
   width: 80%;
-}
-
-.comment-input:hover{
-  /* border: solid 2px #006B86; */
 }
 
 .comment-submit{
