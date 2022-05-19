@@ -41,21 +41,21 @@ export default {
             // Objavi recenziju, treba mi tekst recenzije, tko objavljuje recenziju i za koji objekt.
             const postOptions = {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                },
                 body: JSON.stringify(
                     {  
-                        "title": this.title,
-                        "text": this.review,
-                        "user_id": this.$store.getters.getUser.id,
-                        "restaurant_id": this.id
+                        "naslov": this.title,
+                        "tekst": this.review,
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/review", postOptions);
-            const data = await response.json();
-            console.log(data)
-            console.log("test")
+            const response = await fetch("http://localhost:3000/objects/" + this.id + "/reviews", postOptions);
+            console.log(response)
+
             // Reload page.
             this.$router.go()
         }

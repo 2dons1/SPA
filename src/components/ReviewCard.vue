@@ -65,7 +65,7 @@
         <!-- Popup forma za uredit recenziju -->
         <div v-if="this.showEditForm">
           <EditReviewForm
-            :id=this.id
+            :sid=this.objekt.sid
             :naslov=naslov
             :tekst=tekst
           />
@@ -213,16 +213,11 @@ export default {
                     method: "DELETE",
                     headers: { 
                         "Content-Type": "application/json",
-                        "Authorization": 'Bearer ' + localStorage.getItem('token') 
-                    },
-                    body: JSON.stringify(
-                      {  
-                        "review_id": id
-                      }
-                    )
+                        "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
+                    }
                 };
                 // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-                const response = await fetch("http://localhost:3000/review", deleteOptions);
+                const response = await fetch("http://localhost:3000/objects/" + this.objekt.sid + "/reviews", deleteOptions);
                 console.log(response);
                 // const data = await response.json();
                 if(response.status == 200){
@@ -260,7 +255,7 @@ export default {
                 },
                 body: JSON.stringify(
                   {  
-                    "review_id": this.id
+                    "review_id": this.id // Treba mi sid od odbjekta i username korisnika na cijoj su recenziji komentari.
                   }
                 )
             }

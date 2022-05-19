@@ -22,7 +22,7 @@
 export default {
     name: 'EditReviewForm',
     props: {
-      id: Number, // Id recenzije koju trenutno zelimo uredit.
+      sid: String, // Id objekta recenzije koju zelimo urediti.
       naslov: String, // Naslov recenzije koju uređujemo.
       tekst: String, // Tekst recenzije koju uređujemo.
     },
@@ -50,28 +50,24 @@ export default {
     },
     methods:{
         async handleEditReview(){
-            // Objavi recenziju, treba mi tekst recenzije, tko objavljuje recenziju i za koji objekt.
-            const putOptions = {
-                method: "PUT",
+            
+            const postOptions = {
+                method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
-                    "Authorization": 'Bearer ' + localStorage.getItem('token') 
+                    "Authorization": 'Bearer ' + localStorage.getItem('token').slice(1, -1)
                 },
                 body: JSON.stringify(
                     {  
-                        "title": this.title,
-                        "text": this.review,
-                        "user_id": this.$store.getters.getUser.id,
-                        // "restaurant_id": this.id // misim da mi ovo ne treba, kad uređujem neku recenziju treba mi id te recenzije i nove vrijednosti.
-                        "review_id": this.id
+                        "naslov": this.title,
+                        "tekst": this.review,
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/review", putOptions);
-            const data = await response.json();
-            console.log(data)
-            console.log("test")
+            const response = await fetch("http://localhost:3000/objects/" + this.sid + "/reviews", postOptions);
+            console.log(response)
+            
             // Reload page.
             this.$router.go()
         }

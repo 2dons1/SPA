@@ -8,7 +8,7 @@
                     :naslov = review.naslov
                     :tekst = review.tekst
                     :uređeno = review.uređeno
-                    :objekt = review.objektSid
+                    :objekt = review.objekt
                 />
             </div>
         </div>
@@ -48,6 +48,7 @@ export default{
     },
     async created(){
         this.reviews = await this.fetchReviews();
+        // console.log(this.reviews)
     }
 }
 </script>
