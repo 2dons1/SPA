@@ -146,6 +146,6 @@ export default{
 .pagination{
     position: fixed;
     bottom: 0%;
-    left: 45%;
+    left: 0%;
 }
 </style>

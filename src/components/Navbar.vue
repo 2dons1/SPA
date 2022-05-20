@@ -4,7 +4,7 @@
             <li :class="this.$route.path == '/' ? 'active' : 'none'"><router-link to="/">Početna</router-link></li>
 
             <!-- Ovo nemoj prikazat adminu -->
-            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path == '/objects' ? 'active' : 'none'"><router-link to="/objects">Objekti</router-link></li>
+            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path.startsWith('/objects') ? 'active' : 'none'"><router-link to="/objects">Objekti</router-link></li>
 
             <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i gost. -->
             <div v-if="this.$store.getters.getUser">
@@ -48,6 +48,8 @@ export default{
 </script>
 
 <style scoped>
+
+
 ul {
   display: flex;
   justify-content: left;

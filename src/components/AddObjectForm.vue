@@ -95,7 +95,7 @@ export default {
             console.log(data)
 
             // Reload page.
-            // this.$router.go()
+            this.$router.go()
         }
     }
 }

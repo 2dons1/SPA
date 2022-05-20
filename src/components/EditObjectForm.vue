@@ -26,7 +26,10 @@
             <label>Vrsta: </label>
             <select v-model="type">
                 <option value="caffe">Caffe</option>
-                <option value="nightlife">Nightlife</option>
+                <option value="restoran">Restoran</option>
+                <option value="bistro">Bistro</option>
+                <option value="noćni klub">Noćni klub</option>
+                <option value="bar">Bar</option>
             </select>
 
             <div class="submit">
@@ -144,7 +147,7 @@ export default {
             console.log(response)
 
             // Reload page.
-            // this.$router.go()
+            this.$router.go()
         }
     },
 }

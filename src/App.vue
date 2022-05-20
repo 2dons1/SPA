@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <router-view  :key="$route.path"></router-view>
+    <router-view  :key="$route.path"></router-view> <!-- Ovaj key omogućuje da se vrte stranice koje koriste istu komponentu-->
   </div>
 </template>
 

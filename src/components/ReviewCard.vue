@@ -18,6 +18,10 @@
         <div class="card-footer">
           <p class="timestamp">Objavljeno:{{ datumStvaranja }}</p>
           <p v-if="uređeno" class="edited">Edited</p>
+
+          <!-- Prikazi ovo samo ako si na stranici "Moje recenzije" -->
+          <p v-if="this.$route.path == '/gost/reviews'" class="timestamp"><router-link :to="'/objects/' + this.objekt.sid" class="router">{{ objekt.naziv }}</router-link></p>
+
           <p></p> <!-- Spacer -->
         </div>
 
