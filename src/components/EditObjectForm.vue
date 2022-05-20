@@ -52,12 +52,12 @@ export default {
     props: {
         ime: String,
         adresa: String,
+        grad: String,
         telefon: String,
         workingHours: String,
         pogodnosti: Array,
         kratica: String,
         id: String,
-        grad: String
     },
     data(){
         return{
@@ -119,8 +119,6 @@ export default {
     },
     methods:{
         async handleSubmit(){
-            // Post request na server.
-            // Trebaju mi informacije o objektu i tko salje request tj. ugostiteljev id.
             const putOptions = {
                 method: "PUT",
                 headers: { 
@@ -136,14 +134,12 @@ export default {
                         "vrsta": this.type,
                         "radnoVrijeme": this.workHours,
                         "pogodnosti": this.amenities,
-                        "vlasnik": this.$store.getters.getUser.username, 
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
-            const response = await fetch("http://localhost:3000/restaurants", putOptions);
-            const data = await response.json();
-            console.log(data)
+            const response = await fetch("http://localhost:3000/objects/" + this.id, putOptions);
+            console.log(response)
 
             // Reload page.
             // this.$router.go()

@@ -3,7 +3,10 @@
       <img :src="require(`@/assets/placeholder.png`)" alt="exposed brick wall in a hipster cafe"> <!-- ${image} -->
       <h3>{{naziv}} </h3> 
       <i  v-if="vrsta === 'caffe'" class='fas fa-coffee'></i>
-      <i  v-else class="fas fa-cocktail"></i>
+      <i  v-else-if="vrsta === 'restoran'" class='fas fa-utensils'></i>
+      <i  v-else-if="vrsta === 'bistro'" class='fas fa-utensils'></i>
+      <i  v-else-if="vrsta === 'noćni klub'" class='fas fa-cocktail'></i>
+      <i  v-else-if="vrsta === 'bar'" class='fas fa-beer'></i> 
       <p><strong>Adresa:</strong> {{adresa}}</p>
       <p><strong>Radno vrijeme:</strong> {{radnoVrijeme}}</p>
       <p><strong>Telefon:</strong> {{kontaktBroj}}</p>
