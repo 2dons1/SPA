@@ -16,8 +16,10 @@
             </div>
         </form>
 
+        <!-- 
         <p>Username: {{ username }}</p>
         <p>Lozinka: {{ password }}</p>
+        -->
 
     </div>
 </template>

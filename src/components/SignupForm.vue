@@ -31,12 +31,14 @@
             </div>
         </form>
 
+        <!--
         <p>Ime: {{ name }}</p>
         <p>Prezime: {{ surname }}</p>
         <p>Username: {{ username }}</p>
         <p>Email: {{ email }}</p>
         <p>Lozinka: {{ password }}</p>
         <p>Role: {{ role }}</p>
+        -->
 
     </div>
 </template>

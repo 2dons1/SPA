@@ -23,7 +23,7 @@
         
         <!-- Kartice -->
         <div class="cards"> 
-            <div v-bind:key="restaurant.naziv" v-for="restaurant in filteredRestaurants">
+            <div v-bind:key="restaurant.sid" v-for="restaurant in filteredRestaurants">
                 <RestaurantCard class="card" 
                     :id=restaurant.sid
                     :naziv=restaurant.naziv
@@ -110,7 +110,6 @@ export default{
             if(!this.cities.includes(restaurant.grad)){
                 this.cities.push(restaurant.grad)
             }
-            
         });
     },
 }

@@ -45,6 +45,11 @@
                 </div>
             </div>
 
+            <div class="pagination">
+                <router-link :to="'/objects/' + this.prethodni" class="router">Prethodni</router-link>
+                <router-link :to="'/objects/' + this.sljedeci" class="router">Sljedeci</router-link>
+            </div>
+
     </div>
 </template>
 
@@ -68,6 +73,27 @@ export default{
         EditObjectForm,
     },
     methods:{
+        before(){
+            console.log('/objects/' + this.prethodni);
+            
+        },
+        after(){
+            console.log('/objects/' + this.sljedeci);
+            this.$router.push({ name: '', params: { id: this.sljedeci } })
+        },
+        async fetchRestaurants(city){
+
+            const getOptions = {
+                method: "GET",
+                headers: { 
+                    "Content-Type": "application/json",
+                },
+            }
+
+            const res = await fetch('http://localhost:3000/objects?' + new URLSearchParams({'city': city}), getOptions);
+            const data = await res.json();
+            return data;
+        },
         async fetchRestaurant(){
             //DONS: const res = await fetch('http://localhost:3000/restaurant/' + this.$route.params.id);
             const res = await fetch('http://localhost:3000/objects/' + this.$route.params.id);
@@ -77,18 +103,49 @@ export default{
     },
     async created(){
         this.restaurantInfo = await this.fetchRestaurant();
+        this.restaurants = await this.fetchRestaurants('');
+        this.restaurants.forEach(restaurant => {
+            if(!this.sids.includes(restaurant.sid)){
+                this.sids.push(restaurant.sid)
+            }
+        });
+        if(this.sids.indexOf(this.$route.params.id) == 0){
+            this.prethodni=this.sids[this.sids.length - 1];
+            this.sljedeci=this.sids[1];
+        }
+        else if(this.sids.indexOf(this.$route.params.id) == this.sids.length - 1){
+            this.sljedeci=this.sids[0];
+            this.prethodni=this.sids[this.sids.length - 2];
+        }
+        else{
+            this.sljedeci=this.sids[this.sids.indexOf(this.$route.params.id) + 1];
+            this.prethodni=this.sids[this.sids.indexOf(this.$route.params.id) - 1];
+        }
+
     },
     data(){
         return {
             restaurantInfo: {},
+            restaurants: [],
             restaurantReviews: [],
+            sids: [],
+            prethodni: '',
+            sljedeci: ''
         }
     },
-    
 }
 </script>
 
 
 <style scoped>
+.router{
+    margin-right: 10px;
+    text-decoration: none;
+}
 
+.pagination{
+    position: fixed;
+    bottom: 0%;
+    left: 45%;
+}
 </style>

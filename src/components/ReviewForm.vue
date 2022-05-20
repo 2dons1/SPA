@@ -15,8 +15,11 @@
             <p class="thank-you" v-if="success">Hvala na recenziranju!</p>
             <p class="error" v-if="error">Desila se greška!</p>
         </form>
+
+        <!--
         <p >Naslov recenzije za objekt {{ id }}: {{ title }}</p>
         <p >Tekst recenzije za objekt {{ id }}: {{ review }}</p>
+        -->
 
     </div>
 </template>

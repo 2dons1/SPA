@@ -2,15 +2,20 @@
     <article class="card">
       <img :src="require(`@/assets/placeholder.png`)" alt="exposed brick wall in a hipster cafe"> <!-- ${image} -->
       <h3>{{naziv}} </h3> 
+      
       <i  v-if="vrsta === 'caffe'" class='fas fa-coffee'></i>
       <i  v-else-if="vrsta === 'restoran'" class='fas fa-utensils'></i>
       <i  v-else-if="vrsta === 'bistro'" class='fas fa-utensils'></i>
       <i  v-else-if="vrsta === 'noćni klub'" class='fas fa-cocktail'></i>
-      <i  v-else-if="vrsta === 'bar'" class='fas fa-beer'></i> 
+      <i  v-else-if="vrsta === 'bar'" class='fas fa-beer'></i>
+
+      <p><strong>Grad:</strong> {{grad}}</p> 
       <p><strong>Adresa:</strong> {{adresa}}</p>
       <p><strong>Radno vrijeme:</strong> {{radnoVrijeme}}</p>
       <p><strong>Telefon:</strong> {{kontaktBroj}}</p>
-      <router-link :to="'/restaurants/' + id" class="router">Detalji</router-link>
+      
+      <router-link :to="'/objects/' + id" class="router">Detalji</router-link>
+      
     </article>
 </template>
 
@@ -31,7 +36,8 @@ export default {
             vrsta: String,
             grad: String,
             fotografije: Array,
-            pogodnosti: Array
+            pogodnosti: Array,
+            sids: Array
         },
         
     }

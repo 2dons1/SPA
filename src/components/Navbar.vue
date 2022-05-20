@@ -1,19 +1,19 @@
 <template>
     <div class="navbar">
         <ul>
-            <li :class="this.$route.path == '/' ? 'active' : 'none'"><router-link to="/">Home</router-link></li>
+            <li :class="this.$route.path == '/' ? 'active' : 'none'"><router-link to="/">Početna</router-link></li>
 
             <!-- Ovo nemoj prikazat adminu -->
-            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path == '/restaurants' ? 'active' : 'none'"><router-link to="/restaurants">Restorani</router-link></li>
+            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path == '/objects' ? 'active' : 'none'"><router-link to="/objects">Objekti</router-link></li>
 
             <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i gost. -->
             <div v-if="this.$store.getters.getUser">
-            <li v-if="this.$store.getters.getUser.uloga == 'gost'" :class="this.$route.path == '/reviews' ? 'active' : 'none'"><router-link to="/reviews">Moje recenzije</router-link></li>
+            <li v-if="this.$store.getters.getUser.uloga == 'gost'" :class="this.$route.path == '/gost/reviews' ? 'active' : 'none'"><router-link to="/gost/reviews">Moje recenzije</router-link></li>
             </div>
 
             <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i ugostitelj. -->
             <div v-if="this.$store.getters.getUser">
-            <li  v-if="this.$store.getters.getUser.uloga == 'ugostitelj'" :class="this.$route.path == '/ugostitelj/objekti' ? 'active' : 'none'"><router-link to="/ugostitelj/objekti">My Restaurants</router-link></li>
+            <li  v-if="this.$store.getters.getUser.uloga == 'ugostitelj'" :class="this.$route.path == '/ugostitelj/objekti' ? 'active' : 'none'"><router-link to="/ugostitelj/objekti">Moji objekti</router-link></li>
             </div>
 
             <div v-if="this.$store.getters.getUser">

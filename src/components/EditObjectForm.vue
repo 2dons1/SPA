@@ -34,6 +34,7 @@
             </div>
         </form>
 
+        <!-- 
         <p>Naziv: {{ name }}</p>
         <p>Adresa: {{ address }}</p>
         <p>Grad: {{ city }}</p>
@@ -41,6 +42,7 @@
         <p>Radno vrijeme: {{ workHours }}</p>
         <p>Pogodnosti: {{ amenities }}</p>
         <p>Type: {{ type }}</p>
+        -->
 
     </div>
 </template>
