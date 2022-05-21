@@ -3,27 +3,27 @@
         <form @submit.prevent="handleSubmit">
             <h3 class="title">Dodaj novi objekt</h3>
 
-            <label>Naziv:</label>
+            <label data-test="naziv">Naziv:</label>
             <input v-model="name" type="text" required>
 
-            <label>Adresa:</label>
+            <label data-test="adresa">Adresa:</label>
             <input v-model="address" type="text" required>
 
-            <label>Grad:</label>
+            <label data-test="grad">Grad:</label>
             <input v-model="city" type="text" required>
 
-            <label>Telefon:</label>
+            <label data-test="telefon">Telefon:</label>
             <input v-model="phone" type="text" required>
 
             <!-- Ovo neka bude ovako zasada, kasnije treba neki fancy nacin za dodavanje -->
-            <label>Radno vrijeme:</label>
+            <label data-test="radno">Radno vrijeme:</label>
             <input v-model="workHours" type="text" required>
 
             <!-- Ovo neka bude ovako zasada, kasnije treba neki fancy nacin za dodavanje -->
-            <label>Pogodnosti:</label>
+            <label data-test="pogodnosti">Pogodnosti:</label>
             <input v-model="amenities" type="text" required>
 
-            <label>Vrsta: </label>
+            <label data-test="vrsta">Vrsta: </label>
             <select v-model="type">
                 <option value="caffe">Caffe</option>
                 <option value="restoran">Restoran</option>

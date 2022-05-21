@@ -71,6 +71,7 @@ li a {
 li a:hover:not(.active) {
   background-color: #222222
 }
+
 .navbar{
     margin-bottom: 15px;
 }

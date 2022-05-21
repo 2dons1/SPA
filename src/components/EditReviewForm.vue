@@ -1,10 +1,10 @@
 <template>
     <div>
         <form @submit.prevent="handleEditReview" id="review">
-            <label>Naslov: </label>
+            <label data-test="naslov">Naslov: </label>
             <input v-model="title" type="text" required>
 
-            <label>Tvoje iskustvo:</label>
+            <label data-test="iskustvo">Tvoje iskustvo:</label>
             <textarea v-model="review" rows="4" cols="50" required></textarea>
 
             <div class="submit">

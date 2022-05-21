@@ -3,10 +3,10 @@
         <form @submit.prevent="handleSubmit">
             <h3 class="title">Prijava</h3>
 
-            <label>Korisničko ime:</label>
+            <label data-test="username">Korisničko ime:</label>
             <input v-model="username" type="text" required>
 
-            <label>Lozinka:</label>
+            <label data-test="pwd">Lozinka:</label>
             <input v-model="password" type="password" required>
 
             <p class="error" v-if="error">{{ error }}</p>

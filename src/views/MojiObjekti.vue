@@ -1,13 +1,13 @@
 <!-- Ovaj view sluzi kao prikaz svih objekata određenog ugostitelja tj. kao njegova kontrolna ploča. -->
 <template>
     <div>
-        <div class="buttons">
+        <div data-test="dodaj" class="buttons">
                 <a href="#add-new">
                     <button class="btn">Dodaj novi objekt</button>
                 </a>
         </div>
         
-        <div class="cards"> 
+        <div data-test="kartice" class="cards"> 
             <div v-bind:key="restaurant.naziv" v-for="restaurant in restaurants">
                 <RestaurantCard class="card" 
                     :id=restaurant.sid
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div id="add-new">
+        <div data-test="forma" id="add-new">
             <AddObjectForm />
         </div>
 

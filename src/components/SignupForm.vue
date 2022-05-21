@@ -3,31 +3,31 @@
         <form @submit.prevent="handleSubmit">
             <h3 class="title">Registracija</h3>
 
-            <label>Ime:</label>
+            <label data-test="ime">Ime:</label>
             <input v-model="name" type="text" required>
 
-            <label>Prezime:</label>
+            <label data-test="prezime">Prezime:</label>
             <input v-model="surname" type="text" required>
 
-            <label>Username:</label>
+            <label data-test="username">Username:</label>
             <input v-model="username" type="text" required>
             <p class="error" v-if="username_error">Korisničko ime već postoji!</p>
 
-            <label>Email:</label>
+            <label data-test="email">Email:</label>
             <input v-model="email" type="email" required>
             <p class="error" v-if="email_error">Email adresa ja zauzeta!</p>
 
-            <label>Lozinka:</label>
+            <label data-test="pwd">Lozinka:</label>
             <input v-model="password" type="password" required>
 
-            <label>Uloga: </label>
+            <label data-test="uloga">Uloga: </label>
             <select v-model="role">
                 <option value="ugostitelj">Ugostitelj</option>
                 <option value="gost">Gost</option>
             </select>
 
             <div class="submit">
-                <button>Registiraj se</button>
+                <button>Registriraj se</button>
             </div>
         </form>
 

@@ -2,7 +2,7 @@
     <div>
 
         <!-- Filteri -->
-        <div class="filters">
+        <div data-test="filteri" class="filters">
             <div class="search">
                 <input type="text" v-model="input" placeholder="Pretraži objekte prema imenu..." />
             </div>
