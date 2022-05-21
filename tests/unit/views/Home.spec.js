@@ -1,4 +1,4 @@
-import { mount  } from '@vue/test-utils'
+import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import Home from '@/views/Home.vue'
 
 const $store = {
@@ -21,11 +21,14 @@ const $store = {
 
 describe("Home.vue", () => {
     it("Ispisuje korisničko ime i ulogu ako je korisnik ulogiran, inače ispisuje savijet za login/register", () => {
-        const wrapper = mount(Home,  {
+        const wrapper = shallowMount(Home,  {
             global: {
                 mocks: {
                     $store
                 }
+            },
+            stubs: {
+                RouterLink: RouterLinkStub
             }
         })
         const header = wrapper.get('[data-test="header"]')

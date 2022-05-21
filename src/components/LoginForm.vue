@@ -37,7 +37,7 @@ export default {
     },
     methods:{
         async handleSubmit(){
-            // Provjeri format passworda.
+            // Provjeri format passworda. Nah
 
             // Post request na server.
             const postOptions = {

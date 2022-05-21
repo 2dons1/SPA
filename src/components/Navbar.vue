@@ -4,7 +4,7 @@
             <li :class="this.$route.path == '/' ? 'active' : 'none'"><router-link to="/">Početna</router-link></li>
 
             <!-- Ovo nemoj prikazat adminu -->
-            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path.startsWith('/objects') ? 'active' : 'none'"><router-link to="/objects">Objekti</router-link></li>
+            <li v-if="!(this.$store.getters.getUser && this.$store.getters.getUser.uloga == 'admin')" :class="this.$route.path == '/objects' ? 'active' : 'none'"><router-link to="/objects">Objekti</router-link></li>
 
             <!-- Ovo se prikazuje samo ako je ulogirani korisnik ujedno i gost. -->
             <div v-if="this.$store.getters.getUser">
@@ -23,7 +23,9 @@
             <li class="login" :class="this.$route.path == '/login' ? 'active' : 'none'" v-if="!this.$store.getters.getUser"><router-link to="/login">Login</router-link></li>
             <li :class="this.$route.path == '/register' ? 'active' : 'none'" v-if="!this.$store.getters.getUser"><router-link to="/register">Register</router-link></li>
 
+            <li class="user" v-if="this.$store.getters.getUser"><router-link to="">{{ this.$store.getters.getUser.username }}</router-link></li>
             <li class="logout" @click="handleLogout" v-if="this.$store.getters.getUser"><router-link to="">Logout</router-link></li>
+            
 
         </ul>
     </div>
@@ -88,7 +90,11 @@ li a:hover:not(.active) {
   margin-left: auto;
 }
 
-.logout{
+.user{
+  margin-left: auto;
+}
+
+.user{
   margin-left: auto;
 }
 

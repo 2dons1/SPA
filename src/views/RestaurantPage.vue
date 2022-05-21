@@ -45,6 +45,10 @@
                 </div>
             </div>
 
+            <div class="space"> <!-- Ovo je tu cisto radi izgleda -->
+
+            </div>
+
             <div class="pagination">
                 <router-link :to="'/objects/' + this.prethodni" class="router">Prethodni</router-link>
                 <router-link :to="'/objects/' + this.sljedeci" class="router">Sljedeci</router-link>
@@ -147,5 +151,10 @@ export default{
     position: fixed;
     bottom: 0%;
     left: 0%;
+}
+
+
+.space{
+    height: 200px;
 }
 </style>

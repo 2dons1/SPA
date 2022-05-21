@@ -4,24 +4,24 @@
             <h3 class="title">Dodaj novi objekt</h3>
 
             <label data-test="naziv">Naziv:</label>
-            <input v-model="name" type="text" required>
+            <input placeholder="kafić" v-model="name" type="text" required>
 
             <label data-test="adresa">Adresa:</label>
-            <input v-model="address" type="text" required>
+            <input placeholder="unska 3" v-model="address" type="text" required>
 
             <label data-test="grad">Grad:</label>
-            <input v-model="city" type="text" required>
+            <input placeholder="Zagreb" v-model="city" type="text" required>
 
             <label data-test="telefon">Telefon:</label>
-            <input v-model="phone" type="text" required>
+            <input placeholder="091 234 5678" v-model="phone" type="text" required>
 
             <!-- Ovo neka bude ovako zasada, kasnije treba neki fancy nacin za dodavanje -->
             <label data-test="radno">Radno vrijeme:</label>
-            <input v-model="workHours" type="text" required>
+            <input placeholder="08:00-02:00;08:00-02:00;08:00-02:00..." v-model="workHours" type="text" required>
 
             <!-- Ovo neka bude ovako zasada, kasnije treba neki fancy nacin za dodavanje -->
             <label data-test="pogodnosti">Pogodnosti:</label>
-            <input v-model="amenities" type="text" required>
+            <input placeholder="Internet;Pargking;Dostava..." v-model="amenities" type="text" required>
 
             <label data-test="vrsta">Vrsta: </label>
             <select v-model="type">

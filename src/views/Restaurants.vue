@@ -4,7 +4,7 @@
         <!-- Filteri -->
         <div data-test="filteri" class="filters">
             <div class="search">
-                <input type="text" v-model="input" placeholder="Pretraži objekte prema imenu..." />
+                <input type="text" v-model="input" placeholder="Pretraži objekte prema imenu ili vrsti..." />
             </div>
 
             <!-- Probaj ovaj dropdown stavit da bude kao nastavak search bara-->
@@ -100,7 +100,7 @@ export default{
     computed: {
         filteredRestaurants() {
             return this.restaurants.filter(restaurant => {
-                return restaurant.naziv.toLowerCase().indexOf(this.input.toLowerCase()) != -1;
+                return restaurant.naziv.toLowerCase().indexOf(this.input.toLowerCase()) != -1 || restaurant.vrsta.toLowerCase().indexOf(this.input.toLowerCase()) != -1;
             });
         }
     },

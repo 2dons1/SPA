@@ -5,7 +5,7 @@
       
       <i  v-if="vrsta === 'caffe'" class='fas fa-coffee'></i>
       <i  v-else-if="vrsta === 'restoran'" class='fas fa-utensils'></i>
-      <i  v-else-if="vrsta === 'bistro'" class='fas fa-utensils'></i>
+      <i  v-else-if="vrsta === 'bistro'" class='fas fa-hamburger'></i>
       <i  v-else-if="vrsta === 'noćni klub'" class='fas fa-cocktail'></i>
       <i  v-else-if="vrsta === 'bar'" class='fas fa-beer'></i>
 

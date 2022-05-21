@@ -2,7 +2,7 @@
     <div>
         <h3>Moje recenzije</h3>
 
-        <UserReviews />
+        <UserReviews data-test="user-reviews"/>
 
     </div>
 </template>
