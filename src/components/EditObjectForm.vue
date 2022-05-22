@@ -9,8 +9,10 @@
             <label data-test="adresa">Adresa:</label>
             <input v-model="address" type="text" required>
 
-            <label data-test="grad">Grad:</label>
-            <input v-model="city" type="text" required>
+            <label data-test="grad">Grad: </label>
+            <select v-model="city">
+                <option :value="grad" v-bind:key="grad" v-for="grad in gradovi">{{grad}}</option>
+            </select>
 
             <label data-test="telefon">Telefon:</label>
             <input v-model="phone" type="text" required>
@@ -37,7 +39,7 @@
             </div>
         </form>
 
-        <!-- 
+        
         <p>Naziv: {{ name }}</p>
         <p>Adresa: {{ address }}</p>
         <p>Grad: {{ city }}</p>
@@ -45,7 +47,7 @@
         <p>Radno vrijeme: {{ workHours }}</p>
         <p>Pogodnosti: {{ amenities }}</p>
         <p>Type: {{ type }}</p>
-        -->
+        
 
     </div>
 </template>
@@ -73,6 +75,7 @@ export default {
             workHours: '',
             amenities: '',
             type: '',
+            gradovi: this.$store.getters.getGradovi
         }
     },
     // Ok, ovo moram napravit kako bi se uspjesno prop postavio kao initial data. Inace ce se ponasa nepredvidivo.
@@ -138,11 +141,12 @@ export default {
                         "kontaktBroj": this.phone,
                         "vrsta": this.type,
                         "radnoVrijeme": this.workHours,
-                        "pogodnosti": this.amenities,
+                        "pogodnosti": (this.amenities).toString().split(","),
                     }
                 )
             };
             // Dobio si response nazad, valjda ce tu pisat ako nesto ne valja.
+            console.log(this.amenities)
             const response = await fetch("http://localhost:3000/objects/" + this.id, putOptions);
             console.log(response)
 

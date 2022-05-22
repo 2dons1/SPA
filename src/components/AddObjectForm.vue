@@ -9,19 +9,21 @@
             <label data-test="adresa">Adresa:</label>
             <input placeholder="unska 3" v-model="address" type="text" required>
 
-            <label data-test="grad">Grad:</label>
-            <input placeholder="Zagreb" v-model="city" type="text" required>
+            <label data-test="grad">Grad: </label>
+            <select v-model="city">
+                <option :value="grad" v-bind:key="grad" v-for="grad in gradovi">{{grad}}</option>
+            </select>
 
             <label data-test="telefon">Telefon:</label>
             <input placeholder="091 234 5678" v-model="phone" type="text" required>
 
             <!-- Ovo neka bude ovako zasada, kasnije treba neki fancy nacin za dodavanje -->
             <label data-test="radno">Radno vrijeme:</label>
-            <input placeholder="08:00-02:00;08:00-02:00;08:00-02:00..." v-model="workHours" type="text" required>
+            <input placeholder="08:00-02:00" v-model="workHours" type="text" required>
 
             <!-- Ovo neka bude ovako zasada, kasnije treba neki fancy nacin za dodavanje -->
             <label data-test="pogodnosti">Pogodnosti:</label>
-            <input placeholder="Internet;Pargking;Dostava..." v-model="amenities" type="text" required>
+            <input placeholder="Internet,Pargking,Hrana,Kokteli,Pušački prostor..." v-model="amenities" type="text" required>
 
             <label data-test="vrsta">Vrsta: </label>
             <select v-model="type">
@@ -58,11 +60,12 @@ export default {
         return{
             name: '',
             address: '',
-            city: '',
+            city: 'Zagreb',
             phone: '',
             workHours: '',
             amenities: '',
-            type: 'caffe', // Default uloga neka bude gost.
+            type: 'caffe', // Default uloga neka bude gost.,
+            gradovi: this.$store.getters.getGradovi
         }
     },
     methods:{
@@ -83,7 +86,7 @@ export default {
                         "kontaktBroj": this.phone,
                         "vrsta": this.type,
                         "radnoVrijeme": this.workHours,
-                        "pogodnosti": this.amenities,
+                        "pogodnosti": (this.amenities).toString().split(","),
                         "vlasnik": this.$store.getters.getUser.username, // Procitaj iz vuex koji je user trenutno ulogiran. 
                     }
                 )

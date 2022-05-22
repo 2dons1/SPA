@@ -20,7 +20,7 @@ const $store = {
 }
 
 describe("Home.vue", () => {
-    it("Ispisuje korisničko ime i ulogu ako je korisnik ulogiran, inače ispisuje savijet za login/register", () => {
+    it("Ispisuje korisničko ime i ulogu ako je korisnik ulogiran, inače ispisuje savjet za login/register", () => {
         const wrapper = shallowMount(Home,  {
             global: {
                 mocks: {
