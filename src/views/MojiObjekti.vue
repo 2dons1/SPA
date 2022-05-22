@@ -1,11 +1,44 @@
 <!-- Ovaj view sluzi kao prikaz svih objekata određenog ugostitelja tj. kao njegova kontrolna ploča. -->
 <template>
     <div>
+
+        <div class="master-detail">
+
+            <div class="master">
+                <table id="customers">
+                    <tr>
+                        <th>Moji objekti</th>
+                    </tr>
+                    <tr v-bind:key="restaurant" v-for="restaurant in restaurants">
+                        <td @click="changeDetail(restaurant)" >{{restaurant.naziv}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div v-if="currentRestaurant" class="detail">
+                <RestaurantCard class="restaurant"
+                    :id=currentRestaurant.sid
+                    :naziv=currentRestaurant.naziv
+                    :adresa=currentRestaurant.adresa
+                    :radnoVrijeme=currentRestaurant.radnoVrijeme
+                    :kontaktBroj=currentRestaurant.kontaktBroj
+                    :datumStvaranja=currentRestaurant.datumStvaranja
+                    :potvrden=currentRestaurant.potvrden
+                    :vrsta=currentRestaurant.vrsta
+                    :grad=currentRestaurant.grad
+                    :fotografije=currentRestaurant.fotografije
+                    :pogodnosti=currentRestaurant.pogodnosti
+                />
+            </div>
+        </div>
+
+        <!-- 
         <div data-test="dodaj" class="buttons">
                 <a href="#add-new">
                     <button class="btn">Dodaj novi objekt</button>
                 </a>
         </div>
+        
         
         <div data-test="kartice" class="cards"> 
             <div v-bind:key="restaurant.naziv" v-for="restaurant in restaurants">
@@ -24,6 +57,7 @@
                 />
             </div>
         </div>
+        -->
 
         <div data-test="forma" id="add-new">
             <AddObjectForm />
@@ -59,26 +93,31 @@ export default{
             const data = await res.json();
             return data;
         },
+        changeDetail(restaurant){
+            this.currentRestaurant = restaurant;
+        }
     },
     data(){
         return {
-            restaurants: []
+            restaurants: [],
+            currentRestaurant: null,
         }
     },
     async created(){
         this.restaurants = await this.fetchRestaurants();
+        this.currentRestaurant = this.restaurants[0]
     }
 }
 </script>
 
 
 <style scoped>
-.cards {
-    max-width: 2000px;
-    margin-right: 20px;
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.restaurant{
+    margin: auto;
+}
+
+.detail{
+    margin-top: 10px;
 }
 
 .buttons{
@@ -100,5 +139,29 @@ button:hover{
 
 button:active{
     transform: translateY(4px);
+}
+
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+  margin: auto;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #006B86;
+  color: white;
 }
 </style>
