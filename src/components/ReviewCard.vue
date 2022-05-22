@@ -100,17 +100,20 @@ export default {
           }
         },
         props: {
-            user_id: Number, // User_id od korisnika koji je napisao ovu recenziju.
-            review_text: String, // Tekst recenzije.
-            review_title: String, // Naslov recenzije.
-            id: Number, // id recenzije, ovo koristiti kako bi dobio sve komentare te recenzije.
-
             gostUsername: String,
             datumStvaranja: String,
             naslov: String,
             tekst: String,
             uređeno: Boolean,
             objekt: Object
+        },
+        // Moram pazit kad dode do promjene recenzije koju gleda da se promjene i komentari.
+        watch:{
+          objekt: {
+            async handler () {
+              this.comments = await this.fetchComments();
+            },
+          },
         },
         methods:{
           // Komentiranje recenzije.
@@ -245,7 +248,7 @@ export default {
           },
           // Dohvat svih komentara za određenu recenziju.
           async fetchComments(){
-
+            
             const getOptions = {
                 method: "GET",
                 headers: { 
@@ -255,7 +258,6 @@ export default {
 
             const res = await fetch('http://localhost:3000/reviews/' + this.objekt.sid + '/' + this.gostUsername, getOptions);
             const data = await res.json();
-            // console.log(data);
             return data;
           },
         },
