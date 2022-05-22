@@ -84,7 +84,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     
     if (to.meta.requiresAuth) { // Samo ako je route secret tj. zasticena
-        console.log("Probao si pristupi tajnim podacima.")
+        // console.log("Probao si pristupi tajnim podacima.")
         
         // Ugostitelj.
         if(to.fullPath.startsWith('/ugostitelj')){

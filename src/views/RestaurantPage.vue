@@ -102,7 +102,13 @@ export default{
             //DONS: const res = await fetch('http://localhost:3000/restaurant/' + this.$route.params.id);
             const res = await fetch('http://localhost:3000/objects/' + this.$route.params.id);
             const data = await res.json();
-            return data;
+            if(res.status == 200){
+                return data;
+            }
+            else{
+                this.$router.push({name: "NotFound"})
+            }
+            
         },
     },
     async created(){
